@@ -22,7 +22,7 @@ def login():
     # import pdb; pdb.set_trace()
     return render_template('login.html')
 
-@app.route('/check_login', methods = ['POST'])
+@app.route('/check_login', methods = ['GET','POST'])
 def check_login():
     name = request.form['name']
     password = request.form['password']
@@ -31,8 +31,12 @@ def check_login():
     cur.execute("SELECT * FROM user where user_name = %s", (name, ))
     users = cur.fetchall()
     cur.close()
-    import pdb; pdb.set_trace()
-
-    return jsonify(users)
+    # import pdb; pdb.set_trace()
+    if len(users) > 0 :
+        if password == users[0]['password']:
+            return jsonify(1)
+        return jsonify(0)
+    return jsonify(0)
+    # return jsonify(users)
 if __name__ == "__main__":
 	app.run(debug= True)
