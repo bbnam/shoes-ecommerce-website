@@ -262,6 +262,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			var password = document.forms["contactForm"]["password"].value; 
 			if (name == "" || password=="" ){
 				// console.log('sad')
+				$( "#incorrect-name" ).hide();
 				$( "#none-name" ).show();
 			}
 			else{
@@ -276,6 +277,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 				.done(function(data) {
 					console.log(data)
 					if(data == 0){
+						$( "#none-name" ).hide();
 						$( "#incorrect-name" ).show();
 					}
 					else{

@@ -38,5 +38,9 @@ def check_login():
         return jsonify(0)
     return jsonify(0)
     # return jsonify(users)
+
+@app.route('/shop')
+def shop():
+    return render_template('category.html')
 if __name__ == "__main__":
 	app.run(debug= True)
