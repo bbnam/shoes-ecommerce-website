@@ -42,5 +42,13 @@ def check_login():
 @app.route('/shop')
 def shop():
     return render_template('category.html')
+
+@app.route('/all_shoes')
+def all_shoes():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM shoes" )
+    shoes = cur.fetchall()
+    cur.close()
+    return jsonify(shoes)
 if __name__ == "__main__":
 	app.run(debug= True)
