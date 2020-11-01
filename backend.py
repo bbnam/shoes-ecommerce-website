@@ -50,5 +50,6 @@ def all_shoes():
     shoes = cur.fetchall()
     cur.close()
     return jsonify(shoes)
+
 if __name__ == "__main__":
 	app.run(debug= True)
