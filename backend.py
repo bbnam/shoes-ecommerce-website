@@ -49,6 +49,7 @@ def all_shoes():
     cur.execute("SELECT * FROM shoes" )
     shoes = cur.fetchall()
     cur.close()
+
     return jsonify(shoes)
 
 if __name__ == "__main__":
