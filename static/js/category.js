@@ -71,8 +71,10 @@ function selectFun() {
 			success: function(res) {
 				res = res.slice(0,selectedValue)
 				show_shoes(res)
+			
 				}
 			})
+
 	}
 	if (sortValue == 1){
 		$.ajax({
@@ -104,3 +106,5 @@ function selectFun() {
 	
 	
 }
+
+
