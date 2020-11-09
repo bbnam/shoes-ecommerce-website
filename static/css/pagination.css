@@ -37,3 +37,103 @@ button{
 .viewmore:hover:after{
     border-top: 6px solid #fff;
 }
+
+.product_option{
+    margin-bottom: 45px;
+}
+
+.product_option p{
+    color: #111;
+    margin-bottom: 0;
+}
+p{
+    font-size: 15px;
+    font-family: "Nunito Sans", sans-serif;
+    /* color: #3d3d3d; */
+    font-weight: 400;
+    line-height: 25px;
+    margin: 0 0 15px 0;
+    display: block;
+    margin-block-start: 1em ;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.shop__product__option__right{
+    text-align: right;
+}
+
+select {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-transform: none;
+    
+}
+
+option{
+    font-weight: normal;
+    display: block;
+    white-space: pre;
+    min-height: 1.2 em;
+    padding: 0px 2px 1px;
+}
+
+.shop__product__option__right p{
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+
+.shop__product__option__right .nice-select span {
+    color: #3d3d3d;
+    font-size: 15px;
+    font-weight: 700;
+}
+*{
+    box-sizing: border-box;
+}
+.shop__product__option__right .nice-select .list{
+    border-radius: 0;
+}
+.shop__product__option__right .nice-select {
+    float: none;
+    display: inline-block;
+    padding: 0;
+    line-height: 26px;
+    height: auto;
+    border: none;
+    padding-right: 28px;
+}
+
+.nice-select{
+    -webkit-tap-highlight-color: transparent;
+    background-color: #fff;
+    border-radius: 5px;
+    box-sizing: border-box;
+    clear: both;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: normal;
+    outline: none;
+    position: relative;
+    text-align: left;
+    transition: all 0.2s;
+    user-select: none;
+    white-space: nowrap;
+    width: auto;
+}
+.nice-select:after{
+    content: "";
+    display: block;
+    margin-top: -4px;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform-origin: 66% 66%;
+    transform: rotate(45deg);
+    transition: all 0.15s ease-in-out;
+}

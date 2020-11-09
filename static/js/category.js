@@ -4,7 +4,7 @@ window.onload = function() {
 					type : 'GET',
 					url : '/all_shoes',
 					success: function(res) {
-						res = res.slice(0,1)
+						// res = res.slice(0,1)
 						let html = '';
 						res.forEach(element => {
 							let htmlSegment = `<div class="col-lg-4 col-md-6">
@@ -57,54 +57,48 @@ function show_shoes(data){
 			document.getElementById('single-product').innerHTML = html
 }
 
-function selectFun() {
-    var selectBox = document.getElementById("show-select");
-    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-	// alert(selectedValue);'
-	var sortBox = document.getElementById("sort");
-	var sortValue = sortBox.options[sortBox.selectedIndex].value;
-	
-	if (sortValue == 0){
-		$.ajax({
-			type : 'GET',
-			url : '/all_shoes',
-			success: function(res) {
-				res = res.slice(0,selectedValue)
-				show_shoes(res)
-			
-				}
-			})
 
-	}
-	if (sortValue == 1){
-		$.ajax({
-			type : 'GET',
-			url : '/all_shoes',
-			success: function(res) {
-				res.sort(function(a, b) {
-					return parseFloat(b.price) - parseFloat(a.price);
-				});
-				res = res.slice(0,selectedValue)
-				show_shoes(res)
-				}
-			})
-	}
-	if(sortValue == 2){
-		$.ajax({
-			type : 'GET',
-			url : '/all_shoes',
-			success: function(res) {
-				res.sort(function(a, b) {
-					return parseFloat(a.price) - parseFloat(b.price);
-				});
-				res = res.slice(0,selectedValue)
-				show_shoes(res)
-				}
-			})
-	}
-	event.preventDefault();
+$(document).ready(function(){
+    $(".list li").on("click", function(){
+        var dataId = $(this).attr("data-value");
+		// alert("The data-id of clicked item is: " + dataId);
+		console.log(typeof(dataId))
+		if (dataId == 0){
+			$.ajax({
+				type : 'GET',
+				url : '/all_shoes',
+				success: function(res) {
+					show_shoes(res)
+					}
+				})
 	
-	
-}
-
+		}
+		if (dataId == 1){
+			$.ajax({
+				type : 'GET',
+				url : '/all_shoes',
+				success: function(res) {
+					res.sort(function(a, b) {
+						return parseFloat(b.price) - parseFloat(a.price);
+					});
+					show_shoes(res)
+					}
+				})
+		}
+		if(dataId == 2){
+			$.ajax({
+				type : 'GET',
+				url : '/all_shoes',
+				success: function(res) {
+					res.sort(function(a, b) {
+						return parseFloat(a.price) - parseFloat(b.price);
+					});
+					show_shoes(res)
+					}
+				})
+		}
+		event.preventDefault();
+		
+    });
+});
 
