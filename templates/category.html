@@ -118,8 +118,8 @@
 	</section>
 	<!-- End Banner Area -->
 	<div class="container">
-		<div class="row">
-			<div class="col-xl-3 col-lg-4 col-md-5">
+		<div class="row mb-5">
+			<div class="col-md-3 order-1 mb-5 mb-md-0">
 				<div class="sidebar-categories">
 					<div class="head">Browse Categories</div>
 					<ul class="main-categories">
@@ -272,14 +272,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xl-9 col-lg-8 col-md-7">
+			<div class="col-md-9 order-2">
 				<!-- Start Filter Bar -->
-				<div class="filter-bar d-flex flex-wrap align-items-center">
+				<div class="d-flex flex-wrap align-items-center">
 					<div class="sorting">
-						<select>
-							<option value="1">Default sorting</option>
-							<option value="1">Default sorting</option>
-							<option value="1">Default sorting</option>
+						<select id ="sort" onchange="selectFun()" >
+							<option value="0">Sắp xếp</option>
+							<option value="1">Giá từ cao đến thấp</option>
+							<option value="2">Giá từ thấp đến cao</option>
 						</select>
 					</div>
 					<div class="sorting mr-auto">
@@ -288,7 +288,6 @@
 							<option value="2">Show 2</option>
 						</select>
 					</div>
-
 				</div>
 				<!-- End Filter Bar -->
 				
@@ -301,23 +300,23 @@
 					</div>
 				</section>
 				<!-- End Best Seller -->
-
-
-
-				<!-- Start Filter Bar -->
-				<div class="filter-bar d-flex flex-wrap align-items-center">
-					<div class="pagination">
-						<a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
-						<a href="#" class="active">1</a>
-						<a href="#">2</a>
-						<a href="#">3</a>
-						<a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-						<a href="#">6</a>
-						<a href="#" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+				<div class="row aos-init aos-animate" data-aos="fade-up">
+					<div class="col-md-12 text-center">
+					
+						<div class="pagination site-block-27">
+							<a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+							<a href="#" class="active">1</a>
+							<a href="#">2</a>
+							<a href="#">3</a>
+							<a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
+							<a href="#">6</a>
+							<a href="#" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+						</div>
 					</div>
+	
 				</div>
-				<!-- End Filter Bar -->
 			</div>
+			
 		</div>
 	</div>
 

@@ -50,6 +50,9 @@ def all_shoes():
     shoes = cur.fetchall()
     cur.close()
 
+    for shoe in shoes:
+        shoe['picture'] = url_for('static', filename=shoe['picture'])
+    
     return jsonify(shoes)
 
 if __name__ == "__main__":
