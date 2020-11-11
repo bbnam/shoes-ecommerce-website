@@ -57,6 +57,18 @@ def all_shoes():
 
 @app.route('/shop/<id>')  # /landingpageA
 def landing_page(id):
-    return id
+    format = request.args.get('format', 'html')
+    if format == 'html':
+        return render_template('single-product.html')
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM shoes where id = %s",(id, ) )
+    shoes = cur.fetchall()
+    cur.close()
+
+    for shoe in shoes:
+        shoe['picture'] = url_for('static', filename=shoe['picture'])
+    
+    return jsonify(shoes)
 if __name__ == "__main__":
 	app.run(debug= True)

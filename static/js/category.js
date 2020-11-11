@@ -10,7 +10,7 @@ window.onload = function() {
 							let htmlSegment = `<div class="col-lg-4 col-md-6">
 								<div class="single-product">
 									<a href="/shop/${element.id}">
-										<img class="img-fluid" src="${element.picture}" alt="" "> 
+										<img style="height:300px;"class="img-fluid" src="${element.picture}" alt="" "> 
 									<div id='name' class="product-details ">
 										<h6 class>${element.name}</h6>
 										<div class="price d-flex justify-content-center">
