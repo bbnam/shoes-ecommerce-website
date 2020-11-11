@@ -55,5 +55,8 @@ def all_shoes():
     
     return jsonify(shoes)
 
+@app.route('/shop/<id>')  # /landingpageA
+def landing_page(id):
+    return id
 if __name__ == "__main__":
 	app.run(debug= True)

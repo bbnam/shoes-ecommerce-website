@@ -9,9 +9,8 @@ window.onload = function() {
 						res.forEach(element => {
 							let htmlSegment = `<div class="col-lg-4 col-md-6">
 								<div class="single-product">
-									<a href="#">
+									<a href="/shop/${element.id}">
 										<img class="img-fluid" src="${element.picture}" alt="" "> 
-									</a>
 									<div id='name' class="product-details ">
 										<h6 class>${element.name}</h6>
 										<div class="price d-flex justify-content-center">
@@ -19,6 +18,7 @@ window.onload = function() {
 											<h6 class="l-through">${element.price}</h6>
 										</div>
 									</div>
+									<a>
 								</div>
 							</div>
 						`
@@ -99,6 +99,12 @@ $(document).ready(function(){
 		}
 		event.preventDefault();
 		
-    });
+	});
+	
+
+	$(document).on("click", "a", function(e){
+		console.log($(this).text());
+	});
+
 });
 
