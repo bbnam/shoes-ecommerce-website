@@ -48,12 +48,29 @@ def all_shoes():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute("SELECT * FROM shoes" )
     shoes = cur.fetchall()
-    cur.close()
+    # cur.close()
+    shoes = [shoes[i]['id'] for i in range(len(shoes))]
 
-    for shoe in shoes:
-        shoe['picture'] = url_for('static', filename=shoe['picture'])
-    
-    return jsonify(shoes)
+    dict = []
+    array_image = []
+
+    for i in shoes:
+        cur.execute("select * from shoes where id = %s", (i,))
+        shoesid = cur.fetchone()  
+
+        cur.execute("Select name as image from shoes_image where shoes_id =%s", (i,))
+        shoes_image = cur.fetchall()
+
+        for image in shoes_image:
+            image['image'] = url_for('static', filename=image['image'])
+            array_image.append(image['image'])
+        shoesid['list_image'] = array_image
+
+
+        dict.append(shoesid)
+        array_image=[]
+
+    return jsonify(dict)
 
 @app.route('/shop/<id>')  # /landingpageA
 def landing_page(id):

@@ -10,7 +10,7 @@ window.onload = function() {
 							let htmlSegment = `<div class="col-lg-4 col-md-6">
 								<div class="single-product">
 									<a href="/shop/${element.id}">
-										<img style="height:300px;"class="img-fluid" src="${element.picture}" alt="" "> 
+										<img style="height:300px;"class="img-fluid" src="${element.list_image[0]}" alt="" "> 
 									<div id='name' class="product-details ">
 										<h6 class>${element.name}</h6>
 										<div class="price d-flex justify-content-center">
@@ -22,7 +22,7 @@ window.onload = function() {
 								</div>
 							</div>
 						`
-						
+
 						html += htmlSegment
 						});
 						$("#single-product").append(html);
@@ -39,14 +39,16 @@ function show_shoes(data){
 				data.forEach(element => {
 				let htmlSegment = `<div class="col-lg-4 col-md-6">
 					<div class="single-product">
-						<img class="img-fluid" src="${element.picture}" alt="">
-						<div id='name' class="product-details">
-							<h6>${element.name}</h6>
-							<div class="price d-flex justify-content-center">
+						<a href="/shop/${element.id}">
+							<img style="height:300px;"class="img-fluid" src="${element.list_image[0]}" alt="" "> 
+							<div id='name' class="product-details ">
+								<h6 class>${element.name}</h6>
+								<div class="price d-flex justify-content-center">
 								<h6>${element.price}</h6>
 								<h6 class="l-through">${element.price}</h6>
 							</div>
 						</div>
+						<a>
 					</div>
 				</div>
 			`
