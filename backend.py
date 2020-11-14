@@ -42,18 +42,12 @@ def check_login():
 @app.route('/shop')
 def shop():
     return render_template('category.html')
-
-@app.route('/all_shoes')
-def all_shoes():
-    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM shoes" )
-    shoes = cur.fetchall()
-    # cur.close()
+def get_shoes_image_in_shoes(shoes):
     shoes = [shoes[i]['id'] for i in range(len(shoes))]
 
     dict = []
     array_image = []
-
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     for i in shoes:
         cur.execute("select * from shoes where id = %s", (i,))
         shoesid = cur.fetchone()  
@@ -69,8 +63,19 @@ def all_shoes():
 
         dict.append(shoesid)
         array_image=[]
+    cur.close()
+    
+    return dict
+@app.route('/all_shoes')
+def all_shoes():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM shoes" )
+    shoes = cur.fetchall()
+    cur.close()
+    shoes = get_shoes_image_in_shoes(shoes)
 
-    return jsonify(dict)
+
+    return jsonify(shoes)
 
 @app.route('/shop/<id>')  # /landingpageA
 def landing_page(id):
@@ -83,8 +88,7 @@ def landing_page(id):
     shoes = cur.fetchall()
     cur.close()
 
-    for shoe in shoes:
-        shoe['picture'] = url_for('static', filename=shoe['picture'])
+    shoes = get_shoes_image_in_shoes(shoes)
     
     return jsonify(shoes)
 if __name__ == "__main__":
