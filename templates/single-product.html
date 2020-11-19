@@ -219,7 +219,7 @@
 						<p style="color: red; text-align: center; font-size: 16px; display: none;" id='no-shoes'>Sản phẩm tạm hết</p>
 						<p style="color: red; text-align: center; font-size: 16px; display: none;" id='have-shoes'></p>
 						<div class="card_area d-flex align-items-center">
-							<a class="primary-btn" href="#">Add to Cart</a>
+							<div class="primary-btn" onclick="addtoCart()">Add to Cart</div>
 							<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
 							<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
 						</div>
@@ -774,6 +774,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="{{url_for('static', filename='js/gmaps.min.js' )}}"></script>
 	<script src="{{url_for('static', filename='js/main.js' )}}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	<script>
 		var size = 0
 		window.onload = function() {
@@ -804,7 +805,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 							// target size
 		var size = 0	
+		var name_size_target = ''
 		$('input.visually-hidden').click(function() {  
+			name_size_target = $(this).attr('value')
 			$.ajax({
 						data : {
 							size : window.location.href.substring(window.location.href.length - 1, window.location.href.length),
@@ -824,7 +827,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 								$('#no-shoes').hide()
 								$('#have-shoes').show()
 							}
-						console.log(typeof(size[0].amount))
 
 						})
 	});
@@ -861,6 +863,32 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			return false;
 		}
 		
+	}
+
+	function addtoCart () {
+
+		if (document.getElementById('sst').value == 0){
+			Swal.fire({
+			icon: 'error',
+			title: 'Lỗi',
+			text: 'Số lượng hàng hóa không hợp lệ',
+			})
+		}
+		else{
+			Swal.fire(
+			'Thành Công!!',
+			'Thêm vào giỏ hàng thành công',
+			'success'
+			)
+			setCookie("name_size",name_size_target, 365)
+
+		}
+	}
+	function setCookie(cname, cvalue, exdays) {
+	var d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	var expires = "expires="+ d.toUTCString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 	}
 	</script>
 </body>
