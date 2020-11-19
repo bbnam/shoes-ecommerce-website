@@ -1,0 +1,145 @@
+.prl6-sm{
+    padding-right: 24px;
+    padding-left: 24px;
+}
+
+.mt2-sm {
+    margin-top: 8px;
+}
+
+.mt5-sm{
+    margin-top: 12px;
+}
+.mb3-sm{
+    margin-bottom: 12px;
+}
+.body-2{
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 400;
+}
+.css-12whm6j > :not(input):not(label) {
+    position: relative;
+}
+
+.visually-hidden {
+    position: absolute ;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
+    white-space: nowrap;
+}
+
+.css-xf3ahq {
+    height: 48px;
+    border-radius: 4px;
+}
+
+.css-1pj6y87 label {
+    background: rgb(255, 255, 255);
+    color: rgb(17, 17, 17);
+    box-shadow: rgb(229, 229, 229) 0px 0px 0px 1px;
+}
+
+.css-12whm6j > :not(input):not(label) > label {
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.css-1pj6y87 input[type="radio"].visually-hidden + label {
+    outline: none;
+}
+
+.css-1pj6y87 input[type="radio"]:checked + label {
+    box-shadow: rgb(17, 17, 17) 0px 0px 0px 1px inset;
+}
+
+.css-1pj6y87 input[type="radio"]:not(:disabled) + label:hover {
+    box-shadow: rgb(17, 17, 17) 0px 0px 0px 1px inset;
+}
+.css-1pj6y87 input[type="radio"]:not(:disabled) + label {
+    cursor: pointer;
+}
+
+
+input[type="radio" i] {
+    background-color: initial;
+    cursor: default;
+    appearance: radio;
+    box-sizing: border-box;
+    margin: 3px 3px 0px 5px;
+    padding: initial;
+    border: initial;
+}
+
+fieldset{
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    font: inherit;
+    display: block;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
+    padding-block-start: 0.35em;
+    padding-inline-start: 0.75em;
+    padding-inline-end: 0.75em;
+    padding-block-end: 0.625em;
+    min-inline-size: min-content;
+
+}
+legend{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    display: block;
+    padding-inline-start: 2px;
+    padding-inline-end: 2px;
+}
+
+.css-12whm6j {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+}
+
+.bg-transparent {
+    background: transparent;
+}
+
+.css-ybrhvy {
+    width: 100%;
+}
+
+.ta-sm-l {
+    text-align: left;
+}
+
+.prl6-sm {
+    padding-right: 24px;
+    padding-left: 24px;
+}
+
+.headline-5 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+
+
+
+
+
+
+
+

@@ -30,6 +30,7 @@
 			<link rel="stylesheet" href="{{url_for('static', filename='css/ion.rangeSlider.css' )}}" />
 			<link rel="stylesheet" href="{{url_for('static', filename='css/ion.rangeSlider.skinFlat.css' )}}" />
 			<link rel="stylesheet" href="{{url_for('static', filename='css/main.css' )}}">
+			<link rel="stylesheet" href="{{url_for('static', filename='css/size-font.css' )}}">
 </head>
 
 <body>
@@ -150,11 +151,63 @@
 						<h2 id="shoes-price"></h2>
 						<ul class="list">
 							<li><a class="active" href="#"><span>Category</span> : Household</a></li>
-							<li><a href="#"><span>Availibility</span> : In Stock</a></li>
+							<li><a href="#"><span>Select size</span> : </a></li>
 						</ul>
-						<p>Mill Oil is an innovative oil filled radiator with the most modern technology. If you are looking for
-							something that can make your interior look awesome, and at the same time give you the pleasant warm feeling
-							during the winter.</p>
+						<div class="mt8-lg">
+								<div class="prl6-sm prl0-lg">
+									<fieldset class="mt5-sm mb3-sm body-2 css-1pj6y87">
+										<div class="mt2-sm css-12whm6j">
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499956" name="skuAndSize" type="radio" class="visually-hidden" value="25499956:7">
+												<label for="skuAndSize__25499956" tabindex="-1" class="css-xf3ahq">EU 40</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499962" name="skuAndSize" type="radio" class="visually-hidden" value="25499962:7.5">
+												<label for="skuAndSize__25499962" tabindex="-1" class="css-xf3ahq">EU 40.5</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499955" name="skuAndSize" type="radio" class="visually-hidden" value="25499955:8">
+												<label for="skuAndSize__25499955" tabindex="-1" class="css-xf3ahq">EU 41</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499960" name="skuAndSize" type="radio" class="visually-hidden" value="25499960:8.5">
+												<label for="skuAndSize__25499960" tabindex="-1" class="css-xf3ahq">EU 42</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499954" name="skuAndSize" type="radio" class="visually-hidden" value="25499954:9">
+												<label for="skuAndSize__25499954" tabindex="-1" class="css-xf3ahq">EU 42.5</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499958" name="skuAndSize" type="radio" class="visually-hidden" value="25499958:9.5">
+												<label for="skuAndSize__25499958" tabindex="-1" class="css-xf3ahq">EU 43</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499967" name="skuAndSize" type="radio" class="visually-hidden" value="25499967:10">
+												<label for="skuAndSize__25499967" tabindex="-1" class="css-xf3ahq">EU 44</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499970" name="skuAndSize" type="radio" class="visually-hidden" value="25499970:10.5">
+												<label for="skuAndSize__25499970" tabindex="-1" class="css-xf3ahq">EU 44.5</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499966" name="skuAndSize" type="radio" class="visually-hidden" value="25499966:11">
+												<label for="skuAndSize__25499966" tabindex="-1" class="css-xf3ahq">EU 45</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499969" name="skuAndSize" type="radio" class="visually-hidden" value="25499969:11.5">
+												<label for="skuAndSize__25499969" tabindex="-1" class="css-xf3ahq">EU 45.5</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499965" name="skuAndSize" type="radio" class="visually-hidden" value="25499965:12">
+												<label for="skuAndSize__25499965" tabindex="-1" class="css-xf3ahq">EU 46</label>
+											</div>
+											<div>
+												<input aria-describedby="pdp-buytools-low-inventory-messaging" id="skuAndSize__25499963" name="skuAndSize" type="radio" class="visually-hidden" value="25499963:13">
+												<label for="skuAndSize__25499963" tabindex="-1" class="css-xf3ahq">EU 47.5</label>
+											</div>
+										</div>
+									</fieldset>
+								</div>
 						<div class="product_count">
 							<label for="qty">Quantity:</label>
 							<input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
@@ -742,6 +795,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 										})
 							event.preventDefault();
 							}
+
+							// target size
+		$('input.visually-hidden').click(function() { alert($(this).attr('value')); });
+							
+
 	</script>
 </body>
 
