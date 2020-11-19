@@ -91,5 +91,17 @@ def landing_page(id):
     shoes = get_shoes_image_in_shoes(shoes)
     
     return jsonify(shoes)
+
+@app.route('/size', methods=['POST'])
+def all_size_shoes():
+    size = request.form['size']
+    name = request.form['name']
+    # import pdb; pdb.set_trace()
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT amount FROM specific_shoes where shoes_id = %s and name = %s",(size,name, ) )
+    size_shoes = cur.fetchall()
+    cur.close()
+
+    return jsonify(size_shoes)
 if __name__ == "__main__":
 	app.run(debug= True)
