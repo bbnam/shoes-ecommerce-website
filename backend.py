@@ -104,20 +104,9 @@ def all_size_shoes():
 
     return jsonify(size_shoes)
 
-@app.route('/cart', methods=['GET','POST'])
+@app.route('/cart')
 def cart():
-    shoes_name = request.form['shoes_name']
-    shoes_price = request.form['shoes_price']
-    shoes_size = request.form['shoes_size']
-    shoes_amount = request.form['shoes_amount']
-    import pdb; pdb.set_trace()
-    thisdict = {}
-    thisdict['shoes_name'] = shoes_name
-    thisdict['shoes_price'] = shoes_price
-    thisdict['shoes_size'] = shoes_size
-    thisdict['shoes_amount'] = shoes_amount
-
-    return jsonify(thisdict)
+    return render_template('cart.html')
 
 if __name__ == "__main__":
 	app.run(debug= True)
