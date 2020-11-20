@@ -775,10 +775,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="{{url_for('static', filename='js/gmaps.min.js' )}}"></script>
 	<script src="{{url_for('static', filename='js/main.js' )}}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script src="{{url_for('static', filename='js/cookie.js' )}}"></script>
+
 	<script>
-		var size = 0
+		var name =''
+		var price = ''
 		window.onload = function() {
 			// console.log(window.location.href)
+			
 			url = window.location.href + "?format=json"
 			$.ajax({
 					type : 'GET',
@@ -795,6 +799,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 							$("#shoes-name").html(res[0].name);
 							$("#shoes-price").html(res[0].price);
 							$("#home").html(`<p>${res[0].description}</p>`)
+							name = res[0].name
+							price = res[0].price
 											}
 										})
 
@@ -803,7 +809,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			}
 
 
-							// target size
+		// target size
 		var size = 0	
 		var name_size_target = ''
 		$('input.visually-hidden').click(function() {  
@@ -864,9 +870,10 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		}
 		
 	}
-
+	var shoes = ''
+	
 	function addtoCart () {
-
+		
 		if (document.getElementById('sst').value == 0){
 			Swal.fire({
 			icon: 'error',
@@ -875,21 +882,28 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			})
 		}
 		else{
+		
+		shoes = name + ' - ' + price + ' - ' + name_size_target + ' - ' + document.getElementById('sst').value
+			
 			Swal.fire(
 			'Thành Công!!',
 			'Thêm vào giỏ hàng thành công',
 			'success'
 			)
-			setCookie("name_size",name_size_target, 365)
 
+			if (getCookie("cart") == ''){
+				setCookie("cart", shoes, 365)
+			}
+			else{
+				setCookie("cart", [getCookie("cart"), shoes].join(','), 365)
+			}
 		}
 	}
-	function setCookie(cname, cvalue, exdays) {
-	var d = new Date();
-	d.setTime(d.getTime() + (exdays*24*60*60*1000));
-	var expires = "expires="+ d.toUTCString();
-	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-	}
+
+	// console.log(getCookie("shoes"))
+		
+	
+
 	</script>
 </body>
 
