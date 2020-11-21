@@ -254,7 +254,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             addHTML()
         }
         function addHTML() {
-            if(JSON.parse(localStorage.getItem("cart")) == null){
+            if(JSON.parse(localStorage.getItem("cart")) == null || JSON.parse(localStorage.getItem("cart")) == '' ){
                 $("#cart_area").addClass("center")
                 $("#cart_area").html(`<img src="{{url_for('static', filename='img/empty-cart.png' )}}" alt="">`);
             }
@@ -267,8 +267,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 let html = ''
                 let quantity = 0
                 for (var i = 0; i < result.length; i++){
-                    let elements_cart = result[i].key.split(' - ')
-                    console.log(result[i].value )
+                    if (isNaN(result[i])){
+                        let elements_cart = result[i].key.split(' - ')
+
                     if (parseInt(result[i].value) > parseInt(elements_cart[3])){
                         quantity = elements_cart[3]
                         // console.log(quant)
@@ -307,6 +308,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                                     <h5>${value}</h5>
                                 </td>
                             </tr>`
+                    }
+                    
                             
                     
                 }
@@ -430,20 +433,18 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                         '',
                         'success'
                         )
-                        // bug
-                        store.slice(parseInt(i), 1);
-                        console.log(store)
-                       
-                        // Put the object into storage
+
+                        store.splice(parseInt(i), 1)
+
+ 
                         localStorage.setItem('cart', JSON.stringify(store));
-                        
+                        addHTML()
                     }
                     })
                 
                 
             }
             else{
-            console.log(parseInt(sst) - 1)
             store[parseInt(i)].value = parseInt(sst) - 1
             if (parseInt(sst) > 0){
                 localStorage.setItem("cart", JSON.stringify(store))
@@ -451,9 +452,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             }
             }
 
-            
-            
-                // console.log(store)
             return false;
 		
 	}
