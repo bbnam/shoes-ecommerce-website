@@ -98,7 +98,7 @@ def all_size_shoes():
     name = request.form['name']
     # import pdb; pdb.set_trace()
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT amount FROM specific_shoes where shoes_id = %s and name = %s",(size,name, ) )
+    cur.execute("SELECT id, amount FROM specific_shoes where shoes_id = %s and name = %s",(size,name, ) )
     size_shoes = cur.fetchall()
     cur.close()
 
@@ -108,5 +108,12 @@ def all_size_shoes():
 def cart():
     return render_template('cart.html')
 
+@app.route('/order', methods=['POST'])
+def order():
+    order = request.form['order']
+    address = request.form['address']
+    order_city = request.form['city']
+    import pdb; pdb.set_trace()
+    return "HI"
 if __name__ == "__main__":
 	app.run(debug= True)

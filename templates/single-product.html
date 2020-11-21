@@ -891,13 +891,13 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			)
 
 			dict.push({
-				key: name + ' - ' + name_size_target + ' - '+ image+ ' - '+ size[0].amount + ' - '+ price,
+				key: name + ' - ' + name_size_target + ' - '+ image+ ' - '+ size[0].amount + ' - '+ price + ' - ' + size[0].id,
 				value: document.getElementById('sst').value
 
 			})
 
 			let dict_1 = {
-				key: name + ' - ' + name_size_target + ' - '+ image+ ' - '+ size[0].amount + ' - '+ price,
+				key: name + ' - ' + name_size_target + ' - '+ image+ ' - '+ size[0].amount + ' - '+ price + ' - ' + size[0].id,
 				value: document.getElementById('sst').value
 			}
 			if (JSON.parse(localStorage.getItem("cart")) == null)
