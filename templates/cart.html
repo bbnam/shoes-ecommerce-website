@@ -249,47 +249,65 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="{{url_for('static', filename='js/cookie.js' )}}"></script>
     <script>
         window.onload = function() {
-            if(getCookie("cart") == ''){
+            if(JSON.parse(localStorage.getItem("cart")) == null){
                 $("#cart_area").addClass("center")
                 $("#cart_area").html(`<img src="{{url_for('static', filename='img/empty-cart.png' )}}" alt="">`);
             }
             else{
+                // console.log(JSON.parse(localStorage.getItem("cart")))
+                result = JSON.parse(localStorage.getItem("cart")) 
+                
+                // console.log(result);
+
+                
+
+                let cost = 0
                 let cart = getCookie("cart").split(',')
                 let html = ''
-                for (var i = 0; i < cart.length; i++){
-                    let elements_cart = cart[i].split(' - ')
+                let quantity = 0
+                for (var i = 0; i < result.length; i++){
+                    let elements_cart = result[i].key.split(' - ')
+                    if (result[i].value > elements_cart[3]){
+                        quantity = elements_cart[3]
+                    }
+                    else {
+                        quantity = result[i].value
+                    }
+                    let value = parseInt(elements_cart[4]) * quantity
+
+                    cost += value
                     html += `<tr>
                                 <td>
                                     <div class="media">
                                         <div class="d-flex">
-                                            <img src="${elements_cart[0]}" style="max-width: 300px; height: 200px;" alt="">
+                                            <img src="${elements_cart[2]}" style="max-width: 300px; height: 200px;" alt="">
                                         </div>
                                         <div class="media-body">
-                                            <p>${elements_cart[1]} size ${elements_cart[3]}</p>
+                                            <p>${elements_cart[0]} size ${elements_cart[1]}</p>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <h5>${elements_cart[2]}</h5>
+                                    <h5>${elements_cart[4]}</h5>
                                 </td>
                                 <td>
                                     <div class="product_count">
-                                        <input type="text" name="qty" id="sst" maxlength="12" value=${elements_cart[4]} title="Quantity:"
+                                        <input type="text" name="qty" id=${i} maxlength="12" value=${quantity} title="Quantity:"
                                             class="input-text qty">
-                                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                        <button onclick= add(${i})
                                             class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+                                        <button onclick= sub(${i})
                                             class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
                                     </div>
                                 </td>
                                 <td>
-                                    <h5>$720.00</h5>
+                                    <h5>${value}</h5>
                                 </td>
                             </tr>`
                             
                     
                 }
-                console.log(html)
+                
                 html += `<tr class="bottom_button">
                                 <td>
                                     <a class="gray_btn" href="#">Update Cart</a>
@@ -319,7 +337,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                                     <h5>Subtotal</h5>
                                 </td>
                                 <td>
-                                    <h5>$2160.00</h5>
+                                    <h5>${cost}</h5>
                                 </td>
                             </tr>
                             <tr class="shipping_area">
@@ -330,29 +348,11 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
                                 </td>
                                 <td>
-                                    <h5>Shipping</h5>
+                                    <h5>Address</h5>
                                 </td>
                                 <td>
                                     <div class="shipping_box">
-                                        <ul class="list">
-                                            <li><a href="#">Flat Rate: $5.00</a></li>
-                                            <li><a href="#">Free Shipping</a></li>
-                                            <li><a href="#">Flat Rate: $10.00</a></li>
-                                            <li class="active"><a href="#">Local Delivery: $2.00</a></li>
-                                        </ul>
-                                        <h6>Calculate Shipping <i class="fa fa-caret-down" aria-hidden="true"></i></h6>
-                                        <select class="shipping_select">
-                                            <option value="1">Bangladesh</option>
-                                            <option value="2">India</option>
-                                            <option value="4">Pakistan</option>
-                                        </select>
-                                        <select class="shipping_select">
-                                            <option value="1">Select a State</option>
-                                            <option value="2">Select a State</option>
-                                            <option value="4">Select a State</option>
-                                        </select>
-                                        <input type="text" placeholder="Postcode/Zipcode">
-                                        <a class="gray_btn" href="#">Update Details</a>
+                                        <input type="text" placeholder="Address">
                                     </div>
                                 </td>
                             </tr>
@@ -382,6 +382,49 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             // console.log(getCookie("cart"))
             
         }
+
+        function add (i) {
+                store = JSON.parse(localStorage.getItem("cart")) 
+
+                let elements_cart = store[parseInt(i)].key.split(' - ')
+ 
+                var result = document.getElementById(i); 
+                var sst = result.value; 
+
+
+                if( !isNaN( sst ) && parseInt(sst) < parseInt(elements_cart[3])) {
+                    
+                    result.value++;
+                    store[parseInt(i)].value = sst
+                    // localStorage.setItem("cart", JSON.stringify(store))
+                }
+                else{
+                    result.value = elements_cart[3]
+                }
+                return false;
+                
+        }
+        function sub (i) {
+            store = JSON.parse(localStorage.getItem("cart")) 
+
+            let elements_cart = store[parseInt(i)].key.split(' - ')
+
+            var result = document.getElementById(i); 
+            var sst = result.value; 
+
+
+            if( !isNaN( sst ) && sst > 0) {
+                
+                result.value--;
+                // localStorage.setItem("cart", JSON.stringify(store))
+            }
+            if( parseInt(sst) > parseInt(elements_cart[3])) {
+                result.value = elements_cart[3]
+                   
+                }
+            return false;
+		
+	}
     </script>
 </body>
 

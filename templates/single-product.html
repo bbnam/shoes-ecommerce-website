@@ -872,8 +872,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 		}
 		
 	}
-	var shoes = ''
-	
+	var dict = []
 	function addtoCart () {
 		
 		if (document.getElementById('sst').value == 0){
@@ -882,26 +881,67 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			title: 'Lỗi',
 			text: 'Số lượng hàng hóa không hợp lệ',
 			})
+			localStorage.removeItem("cart")
 		}
 		else{
-		
-		shoes = image + ' - '+ name + ' - ' + price + ' - ' + name_size_target + ' - ' + document.getElementById('sst').value
-			
 			Swal.fire(
 			'Thành Công!!',
 			'Thêm vào giỏ hàng thành công',
 			'success'
 			)
 
-			if (getCookie("cart") == ''){
-				setCookie("cart", shoes, 365)
+			dict.push({
+				key: name + ' - ' + name_size_target + ' - '+ image+ ' - '+ size[0].amount + ' - '+ price,
+				value: document.getElementById('sst').value
+
+			})
+
+			let dict_1 = {
+				key: name + ' - ' + name_size_target + ' - '+ image+ ' - '+ size[0].amount + ' - '+ price,
+				value: document.getElementById('sst').value
+			}
+			if (JSON.parse(localStorage.getItem("cart")) == null)
+			{
+				localStorage.setItem("cart", JSON.stringify(dict))
 			}
 			else{
-				let cart = getCookie("cart").split(',')
-				console.log
+				let a = JSON.parse(localStorage.getItem("cart"))
+				a[(a.length).toString()] = dict_1
+				localStorage.setItem("cart", JSON.stringify(a))
+				
+				input = JSON.parse(localStorage.getItem("cart"))
+				var newObj = {};
+                for(i in input){
+                var item = input[i];
+                    if(newObj[item.key] === undefined){
+                        newObj[item.key] = 0;
+                    }
+                    newObj[item.key] += parseInt(item.value);
+                }
 
-				setCookie("cart", [getCookie("cart"), shoes].join(','), 365)
+                var result = [];
+                
+                for(i in newObj){
+                    result.push({'key':i,'value':newObj[i]});
+                }
+				localStorage.setItem("cart", JSON.stringify(result))
+				console.log(result)
+
 			}
+			// localStorage.setItem("cart", JSON.stringify(dict))
+			
+			//name + ' - ' + name_size_target + ' - '+ image+ ' - '+ size[0].amount + ' - '+ price,
+			
+
+			// if (getCookie("cart") == ''){
+			// 	setCookie("cart", shoes, 365)
+			// }
+			// else{
+			// 	let cart = getCookie("cart").split(',')
+			// 	console.log
+				
+			// 	setCookie("cart", [getCookie("cart"), shoes].join(','), 365)
+			// }
 		}
 	}
 
