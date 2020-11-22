@@ -34,7 +34,7 @@ def check_login():
     # import pdb; pdb.set_trace()
     if len(users) > 0 :
         if password == users[0]['password']:
-            return jsonify(1)
+            return jsonify(users[0]['id'])
         return jsonify(0)
     return jsonify(0)
     # return jsonify(users)

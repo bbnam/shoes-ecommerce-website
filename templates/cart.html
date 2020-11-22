@@ -341,6 +341,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                                 <td>
                                     <div class="shipping_box">
                                         <input type="text" placeholder="Address" id= "address">
+                                        
                                     </div>
                                     <div class="shipping_box">
                                         <input type="text" placeholder="City" id="city">
@@ -361,7 +362,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                                     <div class="checkout_btn_inner d-flex align-items-center">
                                         <a class="gray_btn" href="http://localhost:5000/shop">Continue Shopping</a>
                                         <div class="primary-btn" onclick = addtoOrder() >Proceed to checkout</div>
+                                         
                                     </div>
+                                    
                                 </td>
                             </tr>`
                 $("#mytable").find('tbody').html(html)
@@ -460,15 +463,29 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	        }
             		
             function addtoOrder() {
-                $.ajax({
-                    data:{
-                        order: localStorage.getItem("cart"),
-                        address: document.getElementById("address").value,
-                        city: document.getElementById("city").value
-                    },
-                    type: 'POST',
-                    url: '/order'
-                })
+                if (document.getElementById("address").value == '' || document.getElementById("city").value == ''){
+                    Swal.fire('Vui lòng nhập tên đầy đủ địa chỉ')
+                }
+                else{
+                    if(JSON.parse(localStorage.getItem("user")) == null || JSON.parse(localStorage.getItem("user")) == '' ){
+                    window.location.href = "http://localhost:5000/login";
+                    // console.log("a")
+                    }
+                    else{
+                        $.ajax({
+                        data:{
+                            order: localStorage.getItem("cart"),
+                            address: document.getElementById("address").value,
+                            city: document.getElementById("city").value
+                        },
+                        type: 'POST',
+                        url: '/order'
+                    })  
+                }   
+                }
+                
+                
+
             }
     </script>
 </body>
