@@ -119,110 +119,11 @@
 
 	<!--================Order Details Area =================-->
 	<section class="order_details section_gap">
-		<div class="container">
+		<div class="container" id="container">
 			<h3 class="title_confirmation">Thank you. Your order has been received.</h3>
 			<div class="row order_d_inner">			
 			</div>
-			<div class="order_details_table">
-				<div style="text-align: center;">
-					<h4>Order Info</h4>
-						
-				</div>
-				<div style="margin-left: 10px; margin-bottom: 10px; font-size: 15px;" >
-					<ul class="list">
-						<li><span>Order number</span> : 60235</li>
-						<li><span>Address</span> : USD 2210</li>
-						<li><span>City</span> : Check payments</li>
-
-						
-					</ul>
-				</div>
-
-
-				<!-- <h2>Order Details</h2> -->
-				<div class="table-responsive">
-					<table class="table">
-						
-						<thead>
-							<tr>
-								<th scope="col">Product</th>
-								<th scope="col">Quantity</th>
-								<th scope="col">Total</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<p>Pixelstore fresh Blackberry</p>
-								</td>
-								<td>
-									<h5>x 02</h5>
-								</td>
-								<td>
-									<p>$720.00</p>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<p>Pixelstore fresh Blackberry</p>
-								</td>
-								<td>
-									<h5>x 02</h5>
-								</td>
-								<td>
-									<p>$720.00</p>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<p>Pixelstore fresh Blackberry</p>
-								</td>
-								<td>
-									<h5>x 02</h5>
-								</td>
-								<td>
-									<p>$720.00</p>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<h4>Subtotal</h4>
-								</td>
-								<td>
-									<h5></h5>
-								</td>
-								<td>
-									<p>$2160.00</p>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<h4>Shipping</h4>
-								</td>
-								<td>
-									<h5></h5>
-								</td>
-								<td>
-									<p>Flat rate: $50.00</p>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<h4>Total</h4>
-								</td>
-								<td>
-									<h5></h5>
-								</td>
-								<td>
-									<p>$2210.00</p>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				
-					
-				</div>
+			
 				
 			</div>
 		</div>
@@ -342,6 +243,84 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 					})
 				.done(function(data) {
 					console.log(data)
+					let html = ''
+					for (var i = 0; i <data.length ; i++){
+						let sum = 0
+						html += `
+						<div class="order_details_table">
+				<div style="text-align: center;">
+					<h4>Order Info</h4>
+						
+				</div>
+				<div style="margin-left: 10px; margin-bottom: 10px; font-size: 15px;" >
+					<ul class="list">
+						<li><span>Order number</span> : ${data[i].id}</li>
+						<li><span>Address</span> : ${data[i].address}</li>
+						<li><span>City</span> : ${data[i].city} payments</li>
+
+						
+					</ul>
+				</div>
+				<div class="table-responsive">
+						<table class="table">
+							
+							<thead>
+								<tr>
+									<th scope="col">Product</th>
+									<th scope="col">Quantity</th>
+									<th scope="col">Total</th>
+								</tr>
+							</thead>
+				
+
+				`
+					
+					for (var j = 0; j < data[i].shoes.length; j++){
+						sum += (data[i].shoes)[j].total
+						html += 
+						`
+					
+							<tbody>
+								<tr>
+									<td>
+										<p>${(data[i].shoes)[j].sh} - size ${(data[i].shoes)[j].name} </p>
+									</td>
+									<td>
+										<h5>${(data[i].shoes)[j].quantity}</h5>
+									</td>
+									<td>
+										<p>${(data[i].shoes)[j].total}</p>
+									</td>
+								</tr>
+								`
+							}
+
+
+
+					html += `
+								<tr>
+									<td>
+										<h4>Total</h4>
+									</td>
+									<td>
+										<h5></h5>
+									</td>
+									<td>
+										<p>${sum}</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+						
+					</div>
+							`
+					
+				
+					}
+				$('#container').append(html)
+				
 					
 			});}
 			}

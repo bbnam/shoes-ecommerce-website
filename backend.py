@@ -189,7 +189,7 @@ def showorder():
     for order in all_order:
         order_id = order.get('id')
         query = '''
-        SELECT specific_shoes.name, order_has_size.quantity, shoes.price,shoes.name
+        SELECT specific_shoes.name, order_has_size.quantity, shoes.name as sh,  order_has_size.quantity* shoes.price as total
         FROM specific_shoes
         INNER JOIN shoes ON shoes.id=specific_shoes.shoes_id
         INNER JOIN order_has_size ON order_has_size.size_id=specific_shoes.id
