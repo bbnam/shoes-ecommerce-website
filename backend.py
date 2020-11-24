@@ -3,6 +3,9 @@ from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_mysqldb import MySQL, MySQLdb
+import time
+import datetime
+import ast
 
 app = Flask(__name__)
 mysql = MySQL(app)
@@ -113,7 +116,56 @@ def order():
     order = request.form['order']
     address = request.form['address']
     order_city = request.form['city']
-    import pdb; pdb.set_trace()
-    return "HI"
+    user_id = request.form['user']
+    
+    create_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    order = ast.literal_eval(order)
+         
+    state = 'active'
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    cur.execute("SELECT id FROM `order` ")
+    all_order = cur.fetchall()
+    id_order = len(all_order) + 1
+
+    query = '''
+        INSERT INTO `order`(id, create_time, user_id, address, city, state) 
+        VALUES ({}, '{}', {}, '{}', '{}', '{}')
+    '''.format(id_order, create_time, user_id, address, order_city, state)
+ 
+    cur.execute(query)
+    mysql.connection.commit()
+
+
+
+    # bug am sp
+
+    for i in range(len(order)):
+        key = order[i].get('key').split(' - ')
+
+        query = '''
+        INSERT INTO `order_has_size`(order_id, size_id, quantity) 
+        VALUES ({}, {}, {})
+        '''.format(id_order, key[5], order[i].get('value'))
+        
+        cur.execute(query)
+        mysql.connection.commit()
+        
+
+        cur.execute("SELECT amount FROM specific_shoes where id = %s",(key[5], ) )
+        amount = cur.fetchall()
+
+
+        new_amount = amount[0].get('amount') - order[i].get('value')
+
+        cur.execute("UPDATE specific_shoes SET amount = %s WHERE id = %s", (new_amount, key[5] ))
+        mysql.connection.commit()
+
+        
+    cur.close()
+
+    return jsonify('1')
 if __name__ == "__main__":
 	app.run(debug= True)

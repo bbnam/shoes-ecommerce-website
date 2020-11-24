@@ -459,7 +459,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             }
 
             return false;
-
 	        }
             		
             function addtoOrder() {
@@ -476,15 +475,20 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                         data:{
                             order: localStorage.getItem("cart"),
                             address: document.getElementById("address").value,
-                            city: document.getElementById("city").value
+                            city: document.getElementById("city").value,
+                            user: localStorage.getItem("user")
                         },
                         type: 'POST',
                         url: '/order'
-                    })  
-                }   
+                    }).done(function(data) {
+                        localStorage.removeItem("cart")
+                        window.location.href = "http://localhost:5000/";
+                    })
+                        
+                    
                 }
                 
-                
+                }
 
             }
     </script>
