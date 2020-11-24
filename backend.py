@@ -140,8 +140,6 @@ def order():
 
 
 
-    # bug am sp
-
     for i in range(len(order)):
         key = order[i].get('key').split(' - ')
 
@@ -167,5 +165,46 @@ def order():
     cur.close()
 
     return jsonify('1')
+
+
+
+@app.route('/confirmation')
+def confrim():
+    return render_template('confirmation.html')
+
+@app.route('/showorder', methods=['POST'])
+def showorder():
+    user_id = request.form['user_id']
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    query = '''
+    select id, address, city from `order`
+    where state = 'active' and user_id = {}
+    '''.format(user_id)
+    cur.execute(query)
+    all_order = cur.fetchall()
+
+    # order = ast.literal_eval(all_order)
+    
+    for order in all_order:
+        order_id = order.get('id')
+        query = '''
+        SELECT specific_shoes.name, order_has_size.quantity, shoes.price,shoes.name
+        FROM specific_shoes
+        INNER JOIN shoes ON shoes.id=specific_shoes.shoes_id
+        INNER JOIN order_has_size ON order_has_size.size_id=specific_shoes.id
+        where order_has_size.order_id = {}
+        '''.format(order_id)
+        cur.execute(query)
+        shoes = cur.fetchall()
+
+
+        order['shoes'] = shoes
+ 
+    # import pdb;pdb.set_trace()
+    cur.close()
+
+
+    return jsonify(all_order)
 if __name__ == "__main__":
 	app.run(debug= True)

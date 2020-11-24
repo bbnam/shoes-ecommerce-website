@@ -60,7 +60,7 @@
 									<li class="nav-item active"><a class="nav-link" href="single-product.html">Product Details</a></li>
 									<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
 									<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
-									<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+									<li class="nav-item"><a class="nav-link" href="http://localhost:5000/confirmation">Confirmation</a></li>
 								</ul>
 							</li>
 							<li class="nav-item submenu dropdown">
@@ -826,7 +826,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 							})
 						.done(function(data) {
 							size = data
-							if (data == '' ){
+							
+							if (data == '' || data[0].amount == 0){
 								$('#have-shoes').hide()
 								$('#no-shoes').show()
 							}
@@ -875,7 +876,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	var dict = []
 	function addtoCart () {
 		
-		if (document.getElementById('sst').value == 0){
+		if (document.getElementById('sst').value == 0 || document.getElementById('sst').value > size[0].amount){
 			Swal.fire({
 			icon: 'error',
 			title: 'Lỗi',
