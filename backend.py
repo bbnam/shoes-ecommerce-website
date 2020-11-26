@@ -107,6 +107,18 @@ def all_size_shoes():
 
     return jsonify(size_shoes)
 
+
+@app.route('/shoes-id', methods=['POST'])
+def shoes_id():
+    id = request.form['id']
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM shoes where id = %s",(id, ) )
+    shoes = cur.fetchall()
+    cur.close()
+
+    shoes = get_shoes_image_in_shoes(shoes)
+    return jsonify(shoes)
+
 @app.route('/cart')
 def cart():
     return render_template('cart.html')
@@ -206,5 +218,40 @@ def showorder():
 
 
     return jsonify(all_order)
+
+@app.route('/categories', methods=['GET'])
+def categories():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM categories" )
+    categories = cur.fetchall()
+    cur.close()
+    return jsonify(categories)
+
+
+@app.route('/category', methods=['POST'])
+def category():
+    name = request.form['id']
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+
+
+    cur.execute("SELECT * FROM shoes where categories_id = %s",(name) )
+    shoes = cur.fetchall()
+    cur.close()
+    shoes = get_shoes_image_in_shoes(shoes)
+
+    return jsonify(shoes)
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+@app.route('/manager-product')
+def manager_product():
+    return render_template('manager-products.html')
+
+@app.route('/edit-product')
+def edit():
+    return render_template('edit-product.html')
 if __name__ == "__main__":
 	app.run(debug= True)

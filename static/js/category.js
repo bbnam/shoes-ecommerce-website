@@ -28,7 +28,35 @@ window.onload = function() {
 						$("#single-product").append(html);
 						}
 					})
-event.preventDefault();
+event.preventDefault();	
+
+			$.ajax({
+				type : 'GET',
+				url : '/categories',
+				success: function(res) {
+					// res = res.slice(0,1)
+					let cateSegment = `<form>
+					<ul>`
+					res.forEach(element => {
+						len = element.length
+						cateSegment += `
+						<li class="filter-list">
+							<input class="pixel-radio" type="radio" id=${element.id} onclick="showcategory()" >
+							
+								<label for=${element.name}>${element.name}
+							</label>
+						
+						</li>
+					`
+					cateSegment += `</ul>
+					</form>
+					`
+					
+					});
+					$("#category-form").append(cateSegment);
+					}
+				})
+			event.preventDefault();
 }
 
 
@@ -104,9 +132,19 @@ $(document).ready(function(){
 	});
 	
 
-	$(document).on("click", "a", function(e){
-		console.log($(this).text());
-	});
+
 
 });
 
+function showcategory(){
+	$.ajax({
+		type : 'POST',
+		data: {
+			id : event.target.id,
+		},
+		url : '/category',
+		success: function(res) {
+			show_shoes(res)
+		}
+		})
+}
