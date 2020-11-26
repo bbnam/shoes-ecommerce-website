@@ -180,7 +180,20 @@
                   </div>
                   
                   <div class="row">
-                      
+                    <div class="form-group mb-3 col-xs-12 col-sm-6" id="stock">
+                      <label
+                      for="stock"
+                      >Units In Stock
+                    </label>
+                      <input
+                      id="stock"
+                      name="stock"
+                      type="text"
+                      value=""
+                      class="form-control validate"
+                    />
+                    </div>
+                   
                     <!-- <p style="padding-left: 120px;"> sasdfadfadfafadf</p> -->
                   </div>
                   
@@ -246,7 +259,7 @@
 					url : '/shoes-id'
 					})
 				.done(function(data) {
-          // console.log(data)
+         
           
           name = `  <input
                       id="name"
@@ -264,6 +277,9 @@
                     > ${data[0].description}
                     </textarea>`
           $('#description').append(description)
+          
+          localStorage.setItem("shoes", JSON.stringify(data[0].categories_id))
+          localStorage.setItem("category", JSON.stringify(data[0].id))
       });
       
 
@@ -274,18 +290,58 @@
 				.done(function(data) {
           let html =''
           for (var i = 0; i < data.length; i++){
-            html += `<option value=${i} >${data[i].name}</option>`
+            html += `<option value=${i + 1} >${data[i].name}</option>`
 
           }
           
           $('#category').append(html)
-          $("select option[value='B']").attr("selected","selected");
+          value = JSON.parse(localStorage.getItem("category"))
+          // console.log(value)
+          string = `select option[value='` + JSON.parse(localStorage.getItem("category"))  +  `']`
+          $(string).attr("selected","selected");
+          localStorage.removeItem("category")
 
 
 			});
       }
-    
+      $( "#size" ).change(function(){
+        var selected = $( "#size" ).val()
+        console.log(localStorage.getItem("shoes"))
+        $.ajax({
+                        data:{
+                            name: selected,
+                            size: JSON.parse(localStorage.getItem("shoes")),
+                        },
+                        type: 'POST',
+                        url: '/size'
+                    }).done(function(data) {
+                      // console.log(data)
+                      if (data == '') value = 0
+                      else{
+                        value = data[0].amount
+                      }
+                        let html = `<label
+                                      for="stock"
+                                      >Units In Stock
+                                    </label>
+                                      <input
+                                      id="stock"
+                                      name="stock"
+                                      type="text"
+                                      value="${value}"
+                                      class="form-control validate"
+                                    />`
+                        ;
+                        $('#stock').html(html)
+                        
+                    })
+
+      })
+
 
     </script>
+
+
+
   </body>
 </html>
