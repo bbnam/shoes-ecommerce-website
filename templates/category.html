@@ -29,6 +29,9 @@
 	<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css' )}}">
 	<link rel="stylesheet" href="{{url_for('static', filename='css/main.css' )}}">
 	<link rel="stylesheet" href="{{url_for('static', filename='css/pagination.css' )}}">
+	
+
+
 </head>
 
 <body id="category">
@@ -39,7 +42,7 @@
 			<nav class="navbar navbar-expand-lg navbar-light main_box">
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="http://localhost:5000/"><img src="{{url_for('static', filename='img/logo.png' )}}" alt=""></a>
+					<a class="navbar-brand logo_h" href="index.html"><img src="{{url_for('static', filename='img/logo.png' )}}" alt=""></a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="icon-bar"></span>
@@ -49,39 +52,23 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav ml-auto">
-							<li class="nav-item active"><a href='http://localhost:5000/' class="nav-link" href="">Home</a></li>
+							<li class="nav-item active"><a class="nav-link" href="">Home</a></li>
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 								 aria-expanded="false">Shop</a>
 								<ul class="dropdown-menu">
 									<li class="nav-item"><a class="nav-link" href="shop">Shop Category</a></li>
-									<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
-									<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
-									<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
-									<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+									<li class="nav-item"><a class="nav-link" href="/confirmation">Confirmation</a></li>
 								</ul>
 							</li>
+							
 							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Blog</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-									<li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
-								</ul>
-							</li>
-							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Pages</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="login">Đăng nhập</a></li>
-									<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
-									<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
-								</ul>
+								<a class="nav-link" href="http://localhost:5000/login">Login</a>
 							</li>
 							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="#" class="cart"><span class="ti-bag"></span></a></li>
+							<li class="nav-item"><a href="http://localhost:5000/cart" class="cart"><span class="ti-bag"></span></a></li>
 							<li class="nav-item">
 								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
 							</li>
@@ -109,9 +96,8 @@
 				<div class="col-first">
 					<h1>Shop Category page</h1>
 					<nav class="d-flex align-items-center">
-						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-						<a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
-						<a href="category.html">Fashon Category</a>
+						<a href="http://localhost:5000">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="http://localhost:5000/shop">Shop</span></a>
 					</nav>
 				</div>
 			</div>
@@ -121,33 +107,30 @@
 	<div class="container">
 		<div class="row mb-5">
 			<div class="col-md-3 order-1 mb-5 mb-md-0">
-				<div class="sidebar-filter mt-50">
-					<div class="common-filter">
-						<div class="head">Category</div>
-						<div id= "category-form">
-							
-						</div>
-						
-					</div>
-					
+				<div class="sidebar-categories" id='category-form'>
+					<div class="head">Browse Categories</div>
 					
 				</div>
+
+
+				
 			</div>
 			<div class="col-md-9 order-2">
 
 				<div class="product_option">
 					<div class="row">
 						<div class="col-lg-6 col-md-6 col-sm-6">
-							<div class="shop__product__option__left">
-								<p>
+							<div class="shop__product__option__left" id="name-category">
+								<p style="font-size: 20px; padding-bottom: 10px;" >
 									All
 								</p>
+								
 							</div>
 						</div>
 						<div class="col-lg-6 col-md-6 col-sm-6">
 							<div class="shop__product__option__right">
 								<p>Sắp xếp:</p>
-								<div class="nice-select" tabindex="0">
+								<div class="nice-select"  tabindex="0">
 									<span class="current">Mặc định</span>
 									<ul class="list">
 										<li data-value="0" class="option selected">Mặc định</li>
@@ -173,17 +156,17 @@
 						
 					</div>
 				</section>
-				<!-- End Best Seller -->
-				<!-- <div class="row justify-content-center"> -->
-				<div id="more">
-					<button onclick="3" class="viewmore">
+				<!-- End Best Seller  -->
+				
+				<div id="more" style="display: none;" >
+					<button onclick="more()" class="viewmore">
 						Xem thêm
-						<!-- ::after -->
+						
 					</a>
 				</div>
 						
 					
-				<!-- </div>> -->
+				
 
 				</div>
 			</div>
@@ -407,6 +390,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="{{url_for('static', filename='js/gmaps.min.js' )}}"></script>
 	<script src="{{url_for('static', filename='js/main.js' )}}"></script>
 	<script src="{{url_for('static', filename='js/category.js' )}}"></script>
+	
 
 </body>
 

@@ -278,31 +278,31 @@
                     </textarea>`
           $('#description').append(description)
           
-          localStorage.setItem("shoes", JSON.stringify(data[0].categories_id))
-          localStorage.setItem("category", JSON.stringify(data[0].id))
+        
+          localStorage.setItem("shoes", JSON.stringify(data[0].id))
+
+
+          $.ajax({ 	
+              type : 'GET',
+              url : '/categories'
+              })
+            .done(function(res) {
+              let html =''
+              for (var i = 0; i < res.length; i++){
+                html += `<option value=${i + 1} >${res[i].name}</option>`
+                
+              }
+            
+              $('#category').append(html)
+            
+              string = `select option[value='` + data[0].categories_id  +  `']`
+              $(string).attr("selected","selected");
+
+          });
       });
       
 
-      $.ajax({ 	
-					type : 'GET',
-					url : '/categories'
-					})
-				.done(function(data) {
-          let html =''
-          for (var i = 0; i < data.length; i++){
-            html += `<option value=${i + 1} >${data[i].name}</option>`
-
-          }
-          
-          $('#category').append(html)
-          value = JSON.parse(localStorage.getItem("category"))
-          // console.log(value)
-          string = `select option[value='` + JSON.parse(localStorage.getItem("category"))  +  `']`
-          $(string).attr("selected","selected");
-          localStorage.removeItem("category")
-
-
-			});
+      
       }
       $( "#size" ).change(function(){
         var selected = $( "#size" ).val()
@@ -315,7 +315,7 @@
                         type: 'POST',
                         url: '/size'
                     }).done(function(data) {
-                      // console.log(data)
+                      
                       if (data == '') value = 0
                       else{
                         value = data[0].amount

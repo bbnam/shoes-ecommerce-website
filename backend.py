@@ -80,14 +80,14 @@ def all_shoes():
 
     return jsonify(shoes)
 
-@app.route('/shop/<id>')  # /landingpageA
-def landing_page(id):
+@app.route('/shop/<name>')  # /landingpageA
+def landing_page(name):
     format = request.args.get('format', 'html')
     if format == 'html':
         return render_template('single-product.html')
 
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM shoes where id = %s",(id, ) )
+    cur.execute("SELECT * FROM shoes where name = %s",(name, ) )
     shoes = cur.fetchall()
     cur.close()
 
