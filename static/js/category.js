@@ -12,10 +12,12 @@ window.onload = function() {
 						res = res.slice(0,shoes_show)
 						let html = '';
 						res.forEach(element => {
-							let htmlSegment = `<div class="col-lg-4 col-md-6">
+							let htmlSegment = ''
+							if(element.list_image.length > 4){
+								htmlSegment = `<div class="col-lg-4 col-md-6">
 								<div class="single-product">
 									<a href="/shop/${element.name}">
-										<img class="img-fluid" src="${element.list_image[0]}" alt="" "> 
+										<img class="img-fluid" src="${element.list_image[0]} " onmouseover="this.src='${element.list_image[3]}';" onmouseout="this.src='${element.list_image[0]}';" alt="" "> 
 									<div id='name' class="product-details" style="text-align: center" >
 										<h6 class>${element.name}</h6>
 										<div class="price d-flex justify-content-center">
@@ -27,6 +29,25 @@ window.onload = function() {
 								</div>
 							</div>
 						`
+							}
+							else{
+								htmlSegment = `<div class="col-lg-4 col-md-6">
+								<div class="single-product">
+									<a href="/shop/${element.name}">
+										<img class="img-fluid" src="${element.list_image[0]} "  alt="" "> 
+									<div id='name' class="product-details" style="text-align: center" >
+										<h6 class>${element.name}</h6>
+										<div class="price d-flex justify-content-center">
+											<h6>$${element.price}</h6>
+											<h6 class="l-through">${element.price}</h6>
+										</div>
+									</div>
+									<a>
+								</div>
+							</div>
+						`
+							}
+							
 
 						html += htmlSegment
 						});
@@ -98,21 +119,40 @@ function more(){
 function show_shoes(data, append){
 				let html = '';
 				data.forEach(element => {
-				let htmlSegment = `<div class="col-lg-4 col-md-6">
-					<div class="single-product">
-						<a href="/shop/${element.name}">
-							<img class="img-fluid" src="${element.list_image[0]}" alt="" "> 
-							<div id='name' class="product-details " style="text-align: center">
+					if(element.list_image.length > 4){
+						htmlSegment = `<div class="col-lg-4 col-md-6">
+						<div class="single-product">
+							<a href="/shop/${element.name}">
+								<img class="img-fluid" src="${element.list_image[0]} " onmouseover="this.src='${element.list_image[3]}';" onmouseout="this.src='${element.list_image[0]}';" alt="" "> 
+							<div id='name' class="product-details" style="text-align: center" >
 								<h6 class>${element.name}</h6>
-								<div class="price d-flex justify-content-center" >
-								<h6>$${element.price}</h6>
-								<h6 class="l-through">${element.price}</h6>
+								<div class="price d-flex justify-content-center">
+									<h6>$${element.price}</h6>
+									<h6 class="l-through">${element.price}</h6>
+								</div>
 							</div>
+							<a>
 						</div>
-						<a>
 					</div>
-				</div>
-			`
+				`
+					}
+					else{
+						htmlSegment = `<div class="col-lg-4 col-md-6">
+						<div class="single-product">
+							<a href="/shop/${element.name}">
+								<img class="img-fluid" src="${element.list_image[0]} "  alt="" "> 
+							<div id='name' class="product-details" style="text-align: center" >
+								<h6 class>${element.name}</h6>
+								<div class="price d-flex justify-content-center">
+									<h6>$${element.price}</h6>
+									<h6 class="l-through">${element.price}</h6>
+								</div>
+							</div>
+							<a>
+						</div>
+					</div>
+				`
+					}
 			
 			html += htmlSegment
 			});
