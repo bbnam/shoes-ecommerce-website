@@ -16,7 +16,7 @@ window.onload = function() {
 							if(element.list_image.length > 4){
 								htmlSegment = `<div class="col-lg-4 col-md-6">
 								<div class="single-product">
-									<a href="/shop/${element.name}">
+									<a href="/shop/${element.name}-${element.id}">
 										<img class="img-fluid" src="${element.list_image[0]} " onmouseover="this.src='${element.list_image[3]}';" onmouseout="this.src='${element.list_image[0]}';" alt="" "> 
 									<div id='name' class="product-details" style="text-align: center" >
 										<h6 class>${element.name}</h6>
@@ -33,7 +33,7 @@ window.onload = function() {
 							else{
 								htmlSegment = `<div class="col-lg-4 col-md-6">
 								<div class="single-product">
-									<a href="/shop/${element.name}">
+									<a href="/shop/${element.name}-${element.id}">
 										<img class="img-fluid" src="${element.list_image[0]} "  alt="" "> 
 									<div id='name' class="product-details" style="text-align: center" >
 										<h6 class>${element.name}</h6>
@@ -122,7 +122,7 @@ function show_shoes(data, append){
 					if(element.list_image.length > 4){
 						htmlSegment = `<div class="col-lg-4 col-md-6">
 						<div class="single-product">
-							<a href="/shop/${element.name}">
+							<a href="/shop/${element.name}-${element.id}">
 								<img class="img-fluid" src="${element.list_image[0]} " onmouseover="this.src='${element.list_image[3]}';" onmouseout="this.src='${element.list_image[0]}';" alt="" "> 
 							<div id='name' class="product-details" style="text-align: center" >
 								<h6 class>${element.name}</h6>
@@ -139,7 +139,7 @@ function show_shoes(data, append){
 					else{
 						htmlSegment = `<div class="col-lg-4 col-md-6">
 						<div class="single-product">
-							<a href="/shop/${element.name}">
+						<a href="/shop/${element.name}-${element.id}">
 								<img class="img-fluid" src="${element.list_image[0]} "  alt="" "> 
 							<div id='name' class="product-details" style="text-align: center" >
 								<h6 class>${element.name}</h6>

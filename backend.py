@@ -83,11 +83,13 @@ def all_shoes():
 @app.route('/shop/<name>')  # /landingpageA
 def landing_page(name):
     format = request.args.get('format', 'html')
+    id = name[-1]
+    # import pdb; pdb.set_trace()
     if format == 'html':
         return render_template('single-product.html')
 
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM shoes where name = %s",(name, ) )
+    cur.execute("SELECT * FROM shoes where id = %s",(id, ) )
     shoes = cur.fetchall()
     cur.close()
 
