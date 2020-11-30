@@ -5,7 +5,7 @@
 	<!-- Mobile Specific Meta -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Favicon-->
-	<link rel="shortcut icon" href="img/fav.png">
+	<link rel="shortcut icon" href="{{url_for('static', filename='img/fav.png' )}} ">
 	<!-- Author Meta -->
 	<meta name="author" content="CodePixar">
 	<!-- Meta Description -->
@@ -47,37 +47,22 @@
 					</button>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-						<ul class="nav navbar-nav menu_nav ml-auto">
+						<ul class="nav navbar-nav menu_nav ml-auto" id="tabindex"> 
 							<li class="nav-item active"><a class="nav-link" href="">Home</a></li>
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 								 aria-expanded="false">Shop</a>
 								<ul class="dropdown-menu">
 									<li class="nav-item"><a class="nav-link" href="shop">Shop Category</a></li>
-									<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
-									<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
-									<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
-									<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+									<li class="nav-item"><a class="nav-link" href="/confirmation">Confirmation</a></li>
 								</ul>
 							</li>
-							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Blog</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-									<li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
-								</ul>
-							</li>
-							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Pages</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="login">Đăng nhập</a></li>
-									<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
-									<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
-								</ul>
-							</li>
+							
+							
 							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+							<li class="nav-item submenu dropdown" id='login'>
+								<a class="nav-link" href="http://localhost:5000/login">Login</a>
+							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li class="nav-item"><a href="http://localhost:5000/cart" class="cart"><span class="ti-bag"></span></a></li>
@@ -127,7 +112,7 @@
 						<div class="hover">
 							<h4>New to our website?</h4>
 							<p>There are advances being made in science and technology everyday, and a good example of this is the</p>
-							<a class="primary-btn" href="registration.html">Create an Account</a>
+							<a class="primary-btn" href="http://localhost:5000/register">Create an Account</a>
 						</div>
 					</div>
 				</div>
@@ -255,8 +240,14 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="{{url_for('static', filename='js/gmaps.min.js' )}}"></script>
 	<script src="{{url_for('static', filename='js/main.js' )}}"></script>
+	<script src="{{url_for('static', filename='js/cookie.js' )}}"></script>
+
 	
 	<script>
+		window.onload = function()
+		{
+			login()
+		}
 		$(document).ready(function() {
 			$('#contactForm').on('submit', function(event) {
 			var name = document.forms["contactForm"]["name"].value;
@@ -282,15 +273,35 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 						$( "#incorrect-name" ).show();
 					}
 					else{
-						localStorage.setItem("user", JSON.stringify(data))
+						// localStorage.setItem("user", JSON.stringify(data))
+						setCookie('user', data, 1)
 						console.log(JSON.parse(localStorage.getItem("user")))
 						// window.location.href = "/";
-
 					}
 			});}
+
 			event.preventDefault();
 			});
 		});
+		function login(){
+			
+			if (getCookie('user') != ''){
+				html = `
+
+				<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">Account</a>
+								<ul class="dropdown-menu">
+									<li class="nav-item"><a class="nav-link" href="login.html">Profile</a></li>
+									<li class="nav-item"><a class="nav-link" href="http://localhost:5000/logout">Logout</a></li>
+									
+								</ul>
+				`
+				
+				$('#login').html(html)
+
+			}
+		}
+
 		</script>
 </body>
 

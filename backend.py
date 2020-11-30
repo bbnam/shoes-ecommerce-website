@@ -85,6 +85,35 @@ def all_shoes():
 
     return jsonify(shoes)
 
+
+
+@app.route('/add-comment', methods=['POST'])
+def add_cmt():
+    rate = request.form['rate']
+    comment = request.form['comment']
+    shoes_id = request.form['shoes_id']
+    user_id = request.form['user_id']
+
+    create_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    query ='''
+    INSERT INTO `mydb`.`comment` 
+    (`create_time`, `comment`, `user_id`, `shoes_id`, `rate`) 
+    VALUES ('{}', '{}', {}, {}, {});
+    '''.format(create_time, comment, user_id, shoes_id, rate)
+
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute(query)
+    mysql.connection.commit()
+    cur.execute('Select user_name from user where id = %s', (user_id, ))
+    user_name = cur.fetchone()
+    cur.close()
+
+    return jsonify(user_name)
+    
+
+
 @app.route('/shop/<name>')  # /landingpageA
 def landing_page(name):
     format = request.args.get('format', 'html')
@@ -101,6 +130,51 @@ def landing_page(name):
     shoes = get_shoes_image_in_shoes(shoes)
     
     return jsonify(shoes)
+
+
+@app.route('/get-single-review',methods=['POST'])
+def get_single_review():
+    shoes_id = request.form['shoes_id']
+    user_id = request.form['user_id']
+
+    query = '''
+        select user.user_name, comment.rate, comment.comment
+        from user 
+        INNER JOIN comment
+        ON comment.user_id = user.id
+        where comment.user_id ={} and comment.shoes_id = {}
+    '''.format(user_id, shoes_id)
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute(query)
+    comment = cur.fetchall()
+    cur.close()
+
+    return jsonify(comment)
+
+
+
+@app.route('/get-all-review', methods=['POST'])
+def get_all_review():
+    shoes_id = request.form['shoes_id']
+    query = '''
+        select user.user_name, comment.rate, comment.comment
+        from user 
+        INNER JOIN comment
+        ON comment.user_id = user.id
+        where comment.shoes_id = {}
+    '''.format( shoes_id)
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute(query)
+    comment = cur.fetchall()
+    cur.close()
+
+    return jsonify(comment)
+
+
+
+
 
 @app.route('/size', methods=['POST'])
 def all_size_shoes():

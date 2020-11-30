@@ -28,6 +28,57 @@ var name =''
 
 							event.preventDefault();
 
+			$.ajax({
+				type : 'POST',
+				url : '/get-single-review',
+				data:{
+					shoes_id: window.location.href.substring(window.location.href.length - 1, window.location.href.length),
+					user_id: getCookie('user')
+
+				},
+				success: function(res) {
+					if(res != ''){
+						let html = `
+						<h4> Your Review </h4>
+						<div class="review_item">
+											<div class="media">
+												<div class="d-flex">
+													<img src="img/product/review-3.png" alt="">
+												</div>
+												<div class="media-body">
+													<h4>${res[0].user_name}</h4>
+						`
+	
+	
+						for (var i = 0; i < res[0].rate; i ++){
+							html += `<i class="fa fa-star"></i>`
+						}
+	
+						html += `
+						</div>
+											</div>
+											<p>${res[0].comment}
+												</p>
+										</div>`
+							
+													
+													
+												
+							
+	
+	
+						$('#your-rate').html(html)
+				
+						}
+					}
+					
+			})
+
+			
+
+			this.update_review()
+
+
 			}
 
 
@@ -59,7 +110,102 @@ var name =''
 
 						})
 	});
-							
+	function update_review(){
+		$.ajax({
+			type : 'POST',
+			url : '/get-all-review',
+			data:{
+				shoes_id: window.location.href.substring(window.location.href.length - 1, window.location.href.length)
+
+			},
+			success: function(res) {
+
+				let rate = 0
+				var dict_rate = {
+					"5": 0,
+					"4": 0,
+					"3": 0,
+					"2": 0,
+					"1": 0,
+				};
+
+				let html = ''
+				res.forEach(element => {
+					html += `
+					<div class="review_item">
+										<div class="media">
+											<div class="d-flex">
+												<img src="img/product/review-3.png" alt="">
+											</div>
+											<div class="media-body">
+												<h4>${element.user_name}</h4>
+					`
+
+
+					for (var i = 0; i < element.rate; i ++){
+						html += `<i class="fa fa-star"></i>`
+					}
+					rate += element.rate
+
+					dict_rate[element.rate] += 1
+					  
+
+
+
+
+					html += `
+					</div>
+								</div>
+									<p>${element.comment}
+											</p>
+									</div>
+					`
+
+				});
+				$('#review_list').html(html)
+				
+				len_res = res.length
+
+				if (len_res == 0){
+					avg = 0
+				}
+				else{
+					avg = rate / len_res
+
+				}
+
+				
+				$('#average-rate').html(`
+					<h5>Overall</h5>
+					<h4>${avg}</h4>
+					<h6>(${len_res} Reviews)</h6>
+				
+				`)
+
+				$('#list-star').html(`
+						<h3>Based on ${len_res} Reviews</h3>
+						<ul class="list" >
+							<li><a href="#">${dict_rate['5']} Review <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+								class="fa fa-star"></i><i class="fa fa-star"></i> </a></li>
+					<li><a href="#">${dict_rate['4']} Review <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i
+								class="fa fa-star"></i> </a></li>
+					<li><a href="#">${dict_rate['3']} Review <i class="fa fa-star"></i><i
+								class="fa fa-star"></i><i class="fa fa-star"></i> </a></li>
+					<li><a href="#">${dict_rate['2']} Review <i
+								class="fa fa-star"></i><i class="fa fa-star"></i> </a></li>
+					<li><a href="#"> ${dict_rate['1']} Review <i class="fa fa-star"></i></a></li>
+						</ul>
+
+						<div class="container">
+							<span id="rateMe4"  class="feedback"></span>
+						</div>
+					`)
+				
+		}})
+
+	}	
+	
+	
 	function add () {
 		var result = document.getElementById('sst'); 
 		var sst = result.value; 
@@ -156,6 +302,54 @@ var name =''
 function rating(){
 		let rate = $("input[type='radio'][name='rating']:checked").val()
 		
+		console.log($('#message').val())
+
+
+		$.ajax({
+			type : 'POST',
+			url : '/add-comment',
+			data:{
+				rate: rate,
+				comment: $('#message').val(),
+				shoes_id: window.location.href.substring(window.location.href.length - 1, window.location.href.length),
+				user_id: getCookie('user')
+
+			},
+			success: function(res) {
+				console.log(res)
+				let html = `
+				<h4> Your Review </h4>
+				<div class="review_item">
+									<div class="media">
+										<div class="d-flex">
+											<img src="img/product/review-3.png" alt="">
+										</div>
+										<div class="media-body">
+											<h4>${res.user_name}</h4>
+				`
+
+
+				for (var i = 0; i < rate; i ++){
+					html += `<i class="fa fa-star"></i>`
+				}
+
+				html += `
+				</div>
+									</div>
+									<p>${$('#message').val()}
+										</p>
+								</div>`
+					
+											
+											
+										
+					
+
+
+				$('#your-rate').html(html)
+				update_review()
+				}
+			})
 
 
 
