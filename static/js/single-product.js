@@ -152,16 +152,12 @@ var name =''
 
 		}
     }
-    
-    $(document).ready(function() {
-        $("#rating input:radio").click(function() {
-  
-            $("input[type='radio'][name='rating']:checked").val();
-            
-  
-        });
-  
-      
-  
-  }
-)
+
+function rating(){
+		let rate = $("input[type='radio'][name='rating']:checked").val()
+		
+
+
+
+
+}
