@@ -43,7 +43,7 @@
 			<nav class="navbar navbar-expand-lg navbar-light main_box">
 				<div class="container">
 					<!-- Brand and toggle get grouped for better mobile display -->
-					<a class="navbar-brand logo_h" href="index.html"><img src="{{url_for('static', filename='img/logo.png' )}}" alt=""></a>
+					<a class="navbar-brand logo_h" href="http://localhost:5000/"><img src="{{url_for('static', filename='img/logo.png' )}}" alt=""></a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 					 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="icon-bar"></span>
@@ -52,37 +52,22 @@
 					</button>
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-						<ul class="nav navbar-nav menu_nav ml-auto">
+						<ul class="nav navbar-nav menu_nav ml-auto" id="tabindex"> 
 							<li class="nav-item active"><a class="nav-link" href="">Home</a></li>
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 								 aria-expanded="false">Shop</a>
 								<ul class="dropdown-menu">
 									<li class="nav-item"><a class="nav-link" href="shop">Shop Category</a></li>
-									<li class="nav-item"><a class="nav-link" href="single-product.html">Product Details</a></li>
-									<li class="nav-item"><a class="nav-link" href="checkout.html">Product Checkout</a></li>
-									<li class="nav-item"><a class="nav-link" href="cart.html">Shopping Cart</a></li>
-									<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+									<li class="nav-item"><a class="nav-link" href="/confirmation">Confirmation</a></li>
 								</ul>
 							</li>
-							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Blog</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-									<li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
-								</ul>
-							</li>
-							<li class="nav-item submenu dropdown">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Pages</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="login">Đăng nhập</a></li>
-									<li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
-									<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li>
-								</ul>
-							</li>
+							
+							
 							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+							<li class="nav-item submenu dropdown" id='login'>
+								<a class="nav-link" href="http://localhost:5000/login">Login</a>
+							</li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
 							<li class="nav-item"><a href="http://localhost:5000/cart" class="cart"><span class="ti-bag"></span></a></li>
@@ -247,23 +232,30 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="{{url_for('static', filename='js/gmaps.min.js' )}}"></script>
     <script src="{{url_for('static', filename='js/main.js' )}}"></script>
     <script src="{{url_for('static', filename='js/cookie.js' )}}"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{{url_for('static', filename='js/logout.js' )}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{{url_for('static', filename='js/logout.js' )}}"></script>
+
 
     <script>
         window.onload = function() {
             addHTML()
+            login()
         }
         function addHTML() {
-            if(JSON.parse(localStorage.getItem("cart")) == null || JSON.parse(localStorage.getItem("cart")) == '' ){
+            var name_cart = "cart " + getCookie('user')
+         
+            if(JSON.parse(localStorage.getItem(name_cart)) == null || JSON.parse(localStorage.getItem(name_cart)) == '' ){
                 $("#cart_area").addClass("center")
                 $("#cart_area").html(`<img src="{{url_for('static', filename='img/empty-cart.png' )}}" alt="">`);
             }
             else{
-                result = JSON.parse(localStorage.getItem("cart")) 
+
+                result = JSON.parse(localStorage.getItem(name_cart)) 
                 
 
                 let cost = 0
-                let cart = getCookie("cart").split(',')
+                let cart = getCookie('user').split(',')
                 let html = ''
                 let quantity = 0
                 for (var i = 0; i < result.length; i++){
@@ -378,7 +370,9 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         
         
         function add (i) {
-                store = JSON.parse(localStorage.getItem("cart")) 
+                let name_cart = "cart " + getCookie('user')
+
+                store = JSON.parse(localStorage.getItem(name_cart)) 
 
                 let elements_cart = store[parseInt(i)].key.split(' - ')
  
@@ -397,14 +391,16 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 }
 
                 store[parseInt(i)].value = parseInt(sst) + 1
-                localStorage.setItem("cart", JSON.stringify(store))
+                localStorage.setItem(name_cart, JSON.stringify(store))
                 addHTML()
 
                 return false;
                 
         }
         function sub (i) {
-            store = JSON.parse(localStorage.getItem("cart")) 
+            let name_cart = "cart " + getCookie('user')
+
+            store = JSON.parse(localStorage.getItem(name_cart)) 
 
             let elements_cart = store[parseInt(i)].key.split(' - ')
 
@@ -443,7 +439,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                         store.splice(parseInt(i), 1)
 
  
-                        localStorage.setItem('cart', JSON.stringify(store));
+                        localStorage.setItem(name_cart, JSON.stringify(store));
                         addHTML()
                     }
                     })
@@ -453,7 +449,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             else{
             store[parseInt(i)].value = parseInt(sst) - 1
             if (parseInt(sst) > 0){
-                localStorage.setItem("cart", JSON.stringify(store))
+                localStorage.setItem(name_cart, JSON.stringify(store))
                 addHTML()
             }
             }
@@ -491,6 +487,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                 }
 
             }
+            
     </script>
 </body>
 

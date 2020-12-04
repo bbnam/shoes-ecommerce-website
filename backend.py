@@ -17,6 +17,12 @@ app.config['MYSQL_PASSWORD'] = '1234'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['MYSQL_DB'] = 'mydb'
 
+UPLOAD_FOLDER = '/static/image/File_upload'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -138,7 +144,7 @@ def get_single_review():
     user_id = request.form['user_id']
 
     query = '''
-        select user.user_name, comment.rate, comment.comment
+        select user.name, user.avatar, comment.rate, comment.comment
         from user 
         INNER JOIN comment
         ON comment.user_id = user.id
@@ -158,7 +164,7 @@ def get_single_review():
 def get_all_review():
     shoes_id = request.form['shoes_id']
     query = '''
-        select user.user_name, comment.rate, comment.comment
+        select user.name, user.avatar, comment.rate, comment.comment
         from user 
         INNER JOIN comment
         ON comment.user_id = user.id
@@ -323,6 +329,31 @@ def category():
 
     return jsonify(shoes)
 
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    
+    import pdb; pdb.set_trace()
+    return redirect(url_for('uploaded_file', filename=filename))
+
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
+
+@app.route('/profile-user', methods=['POST'])
+def user_profile():
+    id = request.form['id']
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT email, name FROM user where id = %s",(id) )
+    info = cur.fetchall()
+    cur.close()
+
+    return jsonify(info)
+
+
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
@@ -336,3 +367,4 @@ def edit():
     return render_template('edit-product.html')
 if __name__ == "__main__":
 	app.run(debug= True)
+

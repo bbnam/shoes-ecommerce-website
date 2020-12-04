@@ -58,6 +58,7 @@ window.onload = function() {
 						
 					})
 event.preventDefault();	
+			login()
 
 			$.ajax({
 				type : 'GET',

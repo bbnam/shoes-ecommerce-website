@@ -3,7 +3,6 @@ var name =''
 		var image = ''
 		window.onload = function() {
 			// console.log(window.location.href)
-			
 			url = window.location.href + "?format=json"
 			$.ajax({
 					type : 'GET',
@@ -27,53 +26,58 @@ var name =''
 										})
 
 							event.preventDefault();
-
-			$.ajax({
-				type : 'POST',
-				url : '/get-single-review',
-				data:{
-					shoes_id: window.location.href.substring(window.location.href.length - 1, window.location.href.length),
-					user_id: getCookie('user')
-
-				},
-				success: function(res) {
-					if(res != ''){
-						let html = `
-						<h4> Your Review </h4>
-						<div class="review_item">
-											<div class="media">
-												<div class="d-flex">
-													<img src="img/product/review-3.png" alt="">
+			if (getCookie('user') != ''){
+				$.ajax({
+					type : 'POST',
+					url : '/get-single-review',
+					data:{
+						shoes_id: window.location.href.substring(window.location.href.length - 1, window.location.href.length),
+						user_id: getCookie('user')
+	
+					},
+					success: function(res) {
+						if(res != ''){
+							let html = `
+							<h4> Your Review </h4>
+							<div class="review_item">
+												<div class="media">
+													<div class="d-flex">
+													<img src=${res[0].avatar} style =
+												" width: 30%; 
+												height: 30%; 
+												" alt="">
+													</div>
+													<div class="media-body">
+														<h4>${res[0].name}</h4>
+							`
+		
+							for (var i = 0; i < res[0].rate; i ++){
+								html += `<i class="fa fa-star"></i>`
+							}
+		
+							html += `
+							</div>
 												</div>
-												<div class="media-body">
-													<h4>${res[0].user_name}</h4>
-						`
-	
-	
-						for (var i = 0; i < res[0].rate; i ++){
-							html += `<i class="fa fa-star"></i>`
-						}
-	
-						html += `
-						</div>
-											</div>
-											<p>${res[0].comment}
-												</p>
-										</div>`
-							
+												<p>${res[0].comment}
+													</p>
+											</div>`
+								
+														
+														
 													
-													
-												
-							
-	
-	
-						$('#your-rate').html(html)
-				
-						}
-					}
+								
+		
+		
+							$('#your-rate').html(html)
 					
-			})
+							}
+						}
+						
+				})
+			}
 
+
+			login()
 			
 
 			this.update_review()
@@ -135,10 +139,14 @@ var name =''
 					<div class="review_item">
 										<div class="media">
 											<div class="d-flex">
-												<img src="img/product/review-3.png" alt="">
+												<img src="${element.avatar}" style="
+													width: 30%; 
+													height: 30%; 
+													
+												"alt="">
 											</div>
 											<div class="media-body">
-												<h4>${element.user_name}</h4>
+												<h4>${element.name}</h4>
 					`
 
 
@@ -241,14 +249,21 @@ var name =''
 	}
 	var dict = []
 	function addtoCart () {
-		console.log(size)
-		if (document.getElementById('sst').value == 0 || document.getElementById('sst').value > size[0].amount){
+		
+		if (document.getElementById('sst').value == 0 || document.getElementById('sst').value > size[0].amount ){
 			Swal.fire({
 			icon: 'error',
 			title: 'Lỗi',
 			text: 'Số lượng hàng hóa không hợp lệ',
 			})
-			localStorage.removeItem("cart")
+			// localStorage.removeItem("cart")
+		}
+		if (getCookie('user') == ''){
+			Swal.fire({
+				icon: 'error',
+				title: 'Error',
+				text: 'You must login',
+				})
 		}
 		else{
 			Swal.fire(
@@ -256,7 +271,8 @@ var name =''
 			'Thêm vào giỏ hàng thành công',
 			'success'
 			)
-
+			let cart = "cart " + getCookie('user')
+			console.log(cart)
 			dict.push({
 				key: name + ' - ' + name_size_target + ' - '+ image+ ' - '+ size[0].amount + ' - '+ price + ' - ' + size[0].id,
 				value: document.getElementById('sst').value
@@ -267,16 +283,16 @@ var name =''
 				key: name + ' - ' + name_size_target + ' - '+ image+ ' - '+ size[0].amount + ' - '+ price + ' - ' + size[0].id,
 				value: document.getElementById('sst').value
 			}
-			if (JSON.parse(localStorage.getItem("cart")) == null)
+			if (JSON.parse(localStorage.getItem(cart)) == null)
 			{
-				localStorage.setItem("cart", JSON.stringify(dict))
+				localStorage.setItem(cart, JSON.stringify(dict))
 			}
 			else{
-				let a = JSON.parse(localStorage.getItem("cart"))
+				let a = JSON.parse(localStorage.getItem(cart))
 				a[(a.length).toString()] = dict_1
-				localStorage.setItem("cart", JSON.stringify(a))
+				localStorage.setItem(cart, JSON.stringify(a))
 				
-				input = JSON.parse(localStorage.getItem("cart"))
+				input = JSON.parse(localStorage.getItem(cart))
 				var newObj = {};
                 for(i in input){
                 var item = input[i];
@@ -291,8 +307,8 @@ var name =''
                 for(i in newObj){
                     result.push({'key':i,'value':newObj[i]});
                 }
-				localStorage.setItem("cart", JSON.stringify(result))
-				console.log(result)
+				localStorage.setItem(cart, JSON.stringify(result))
+				
 
 			}
 
@@ -302,55 +318,65 @@ var name =''
 function rating(){
 		let rate = $("input[type='radio'][name='rating']:checked").val()
 		
-		console.log($('#message').val())
-
-
-		$.ajax({
-			type : 'POST',
-			url : '/add-comment',
-			data:{
-				rate: rate,
-				comment: $('#message').val(),
-				shoes_id: window.location.href.substring(window.location.href.length - 1, window.location.href.length),
-				user_id: getCookie('user')
-
-			},
-			success: function(res) {
-				console.log(res)
-				let html = `
-				<h4> Your Review </h4>
-				<div class="review_item">
-									<div class="media">
-										<div class="d-flex">
-											<img src="img/product/review-3.png" alt="">
+		if(getCookie('user') != ''){
+			$.ajax({
+				type : 'POST',
+				url : '/add-comment',
+				data:{
+					rate: rate,
+					comment: $('#message').val(),
+					shoes_id: window.location.href.substring(window.location.href.length - 1, window.location.href.length),
+					user_id: getCookie('user')
+	
+				},
+				success: function(res) {
+					console.log(res)
+					let html = `
+					<h4> Your Review </h4>
+					<div class="review_item">
+										<div class="media">
+											<div class="d-flex">
+												<img src="img/product/review-3.png" alt="">
+											</div>
+											<div class="media-body">
+												<h4>${res.user_name}</h4>
+					`
+	
+	
+					for (var i = 0; i < rate; i ++){
+						html += `<i class="fa fa-star"></i>`
+					}
+	
+					html += `
+					</div>
 										</div>
-										<div class="media-body">
-											<h4>${res.user_name}</h4>
-				`
-
-
-				for (var i = 0; i < rate; i ++){
-					html += `<i class="fa fa-star"></i>`
-				}
-
-				html += `
-				</div>
-									</div>
-									<p>${$('#message').val()}
-										</p>
-								</div>`
-					
+										<p>${$('#message').val()}
+											</p>
+									</div>`
+						
+												
+												
 											
-											
-										
-					
+						
+	
+	
+					$('#your-rate').html(html)
+					update_review()
+					}
+				})
+	
+		}
+		else{
+			Swal.fire({
+				icon: 'error',
+				title: 'Error',
+				text: 'Your must be Login',
+				})
+				
+		}
 
 
-				$('#your-rate').html(html)
-				update_review()
-				}
-			})
-
+		
 
 
 
