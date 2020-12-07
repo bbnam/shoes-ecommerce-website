@@ -445,7 +445,26 @@ def check():
     return render_template('check_code.html')
 
 
+@app.route('/search', methods=['POST'])
+def search():
 
+    search = request.form['search']
+
+    query = '''
+        SELECT *
+        FROM shoes
+        where name like '%{}%'
+        '''.format(search)
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute(query)
+    shoes = cur.fetchall()
+    cur.close()
+
+
+    shoes = get_shoes_image_in_shoes(shoes)
+
+    return jsonify(shoes)
 
 
 if __name__ == "__main__":
