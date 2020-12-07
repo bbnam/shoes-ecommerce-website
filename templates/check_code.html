@@ -5,7 +5,7 @@
 	<!-- Mobile Specific Meta -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Favicon-->
-	<link rel="shortcut icon" href="{{url_for('static', filename='img/fav.png' )}} ">
+	<link rel="shortcut icon" href="img/fav.png">
 	<!-- Author Meta -->
 	<meta name="author" content="CodePixar">
 	<!-- Meta Description -->
@@ -48,7 +48,7 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav ml-auto" id="tabindex"> 
-							<li class="nav-item"><a class="nav-link" href="">Home</a></li>
+							<li class="nav-item active"><a class="nav-link" href="">Home</a></li>
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 								 aria-expanded="false">Shop</a>
@@ -60,7 +60,7 @@
 							
 							
 							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-							<li class="nav-item submenu dropdown active" id='login'>
+							<li class="nav-item submenu dropdown" id='login'>
 								<a class="nav-link" href="http://localhost:5000/login">Login</a>
 							</li>
 						</ul>
@@ -103,40 +103,21 @@
 	<!-- End Banner Area -->
 
 	<!--================Login Box Area =================-->
-	<section class="login_box_area section_gap">
-		<div class="container">
+	<section class="login_box_area section_gap "  >
+		<div class="container" >
 			<div class="row">
-				<div class="col-lg-6">
-					<div class="login_box_img">
-						<img class="img-fluid" src="{{url_for('static', filename='img/login.jpg' )}}" alt="">
-						<div class="hover">
-							<h4>New to our website?</h4>
-							<p>There are advances being made in science and technology everyday, and a good example of this is the</p>
-							<a class="primary-btn" href="http://localhost:5000/register">Create an Account</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="login_form_inner">
-						<h3>Log in to enter</h3>
-						<form class="row login_form" id="contactForm" novalidate="novalidate">
+				
+				<div class="col-md-12">
+					<div class="login_form_inner" style="background-color: white;" id = "table">
+						<h3>Your Code</h3>
+						<form class="row login_form" id="table-code" novalidate="novalidate" style="padding-bottom: 300px;">
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="name" name="name" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+								<input type="text" class="form-control" id="code" name="code" placeholder="Code" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Code'">
 							</div>
 							<div class="col-md-12 form-group">
-								<input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
-							</div>
-							<div class="col-md-12 form-group">
-								<div class="creat_account">
-									<input type="checkbox" id="f-option2" name="selector">
-									<label for="f-option2">Keep me logged in</label>
-								</div>
-							</div>
-							<div class="col-md-12 form-group">
-								<p id='none-name' style="display: none; color:red;">Tài khoản truy cập không hợp lệ</p>
-								<p id='incorrect-name' style="display: none; color:red;">Tài khoản không chính xác</p>
-								<button type="submit" value="submit" class="primary-btn">Log In</button>
-								<a href="/login/forgot-password">Forgot Password?</a>
+								<p id='none-code' style="display: none; color:red;">Code incorrect</p>
+								<!-- <p id='incorrect-name' style="display: none; color:red;">Tài khoản không chính xác</p> -->
+								<button type="submit" value="submit" class="primary-btn">Submit</button>	
 							</div>
 						</form>
 					</div>
@@ -240,53 +221,34 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 	<script src="{{url_for('static', filename='js/gmaps.min.js' )}}"></script>
 	<script src="{{url_for('static', filename='js/main.js' )}}"></script>
-	<script src="{{url_for('static', filename='js/cookie.js' )}}"></script>
-	<script src="{{url_for('static', filename='js/logout.js' )}}"></script>
-
-
 	
 	<script>
-		window.onload = function()
-		{
-			login()
-		}
-		$(document).ready(function() {
-			$('#contactForm').on('submit', function(event) {
-			var name = document.forms["contactForm"]["name"].value;
-			var password = document.forms["contactForm"]["password"].value; 
-			if (name == "" || password=="" ){
-				// console.log('sad')
-				$( "#incorrect-name" ).hide();
-				$( "#none-name" ).show();
+	$('#table-code').on('submit', function(event) {
+			var code = document.forms["table-code"]["code"].value;
+			// console.log(phone_number)
+			if (code == ""  ){
+				// $( "#incorrect-name" ).hide();
+				$( "#none-code" ).show();
 			}
 			else{
 			$.ajax({
 				data : {
-					name : $('#name').val(),
-					password: $('#password').val(),
+					code : $('#code').val(),
 						}, 	
 					type : 'POST',
-					url : '/check_login'
-					})
-				.done(function(data) {
-					console.log(data)
-					if(data == 0){
-						$( "#none-name" ).hide();
-						$( "#incorrect-name" ).show();
-					}
-					else{
-						// localStorage.setItem("user", JSON.stringify(data))
-						setCookie('user', data, 1)
-						
-						window.location.href = "http://localhost:5000/";
-					}
-			});}
-
+					url : '/check_code'
+					}).done(function(res){
+                        console.log(res)
+                    })
+			
+				}
 			event.preventDefault();
 			});
-		});
-		login()
 
+
+		
+		
+		
 		</script>
 </body>
 

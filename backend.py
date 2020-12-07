@@ -1,4 +1,4 @@
-from flask 	import Flask, render_template, request, flash, url_for,jsonify
+from flask 	import Flask, render_template, request, flash, url_for,jsonify, session
 from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,9 +6,24 @@ from flask_mysqldb import MySQL, MySQLdb
 import time
 import datetime
 import ast
+from authy.api import AuthyApiClient
+from random import randint
+from textmagic.rest import TextmagicRestClient
+from sendmail import send_mail, random_code
+from flask_mail import Mail, Message 
+
+
+
+
+
+
 
 app = Flask(__name__)
 mysql = MySQL(app)
+
+
+
+
 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
 app.config['MYSQL_HOST'] = 'localhost'
@@ -17,6 +32,24 @@ app.config['MYSQL_PASSWORD'] = '1234'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['MYSQL_DB'] = 'mydb'
 
+
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'bbnam159@gmail.com'
+app.config['MAIL_PASSWORD'] = 'haiduong123'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
+
+
+
+
+
+
+
+
+# api = AuthyApiClient(app.config['AUTHY_API_KEY'])
 UPLOAD_FOLDER = '/static/image/File_upload'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
@@ -365,6 +398,56 @@ def manager_product():
 @app.route('/edit-product')
 def edit():
     return render_template('edit-product.html')
+
+
+@app.route('/login/forgot-password')
+def forgot_password():
+    return render_template('forgot-password.html')
+
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
+@app.route('/send_code', methods=['POST'])
+def send_code():
+    email = request.form['email']
+    code = random_code(6)
+    
+    # session.pop('code', None)
+    session['code'] = code
+    import pdb; pdb.set_trace()
+
+
+    gmail = []
+    gmail.append(email)
+    msg = Message( 
+                'Code', 
+                sender ='bbnam159@gmail.com', 
+                recipients = gmail 
+               ) 
+
+    msg.body = 'Your code is ' + code 
+    mail.send(msg) 
+    
+
+    return "OK"
+
+
+@app.route('/check_code', methods=['POST'])
+def check_code():
+    code = request.form['code']
+    if (session.get('code') == code):
+        return jsonify(1)
+    import pdb; pdb.set_trace()
+    return jsonify(0)
+ 
+
+@app.route('/login/forgot-password/check-code')
+def check():
+    return render_template('check_code.html')
+
+
+
+
+
 if __name__ == "__main__":
 	app.run(debug= True)
 
