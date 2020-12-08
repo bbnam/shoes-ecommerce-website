@@ -278,8 +278,13 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
   <script>
 
     window.onload = function(){
-      login()
-      $.ajax({
+		login()
+
+		if (getCookie('user') == ''){
+			window.location.href = 'http://localhost:5000/login'
+		}
+		else {
+			$.ajax({
                         data:{
                             id: getCookie('user')
                         },
@@ -298,6 +303,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                       `
                       $('#info').html(html)
                     })
+		}
+    
     } 
 
     // let formData = new FormData();           
@@ -307,8 +314,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     // await fetch('/upload', {
     //   method: "POST", 
     //   body: formData
-  var myFile = $('#fileupload').prop('files');
-  console.log(myFile)
+ 
 
 
 // }

@@ -339,6 +339,40 @@ def showorder():
 
     return jsonify(all_order)
 
+@app.route('/show_all_order', methods=['GET'])
+def show_all_order():
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    query = '''
+    select id, address, city from `order`
+    where state = 'active'
+    '''
+    cur.execute(query)
+    all_order = cur.fetchall()
+
+    # order = ast.literal_eval(all_order)
+    
+    for order in all_order:
+        order_id = order.get('id')
+        query = '''
+        SELECT specific_shoes.name, order_has_size.quantity, shoes.name as sh,  order_has_size.quantity* shoes.price as total
+        FROM specific_shoes
+        INNER JOIN shoes ON shoes.id=specific_shoes.shoes_id
+        INNER JOIN order_has_size ON order_has_size.size_id=specific_shoes.id
+        where order_has_size.order_id = {}
+        '''.format(order_id)
+        cur.execute(query)
+        shoes = cur.fetchall()
+
+
+        order['shoes'] = shoes
+ 
+    # import pdb;pdb.set_trace()
+    cur.close()
+
+
+    return jsonify(all_order)
+
 @app.route('/categories', methods=['GET'])
 def categories():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -383,6 +417,8 @@ def user_profile():
     cur.execute("SELECT email, name FROM user where id = %s",(id) )
     info = cur.fetchall()
     cur.close()
+
+    
 
     return jsonify(info)
 
@@ -465,6 +501,28 @@ def search():
     shoes = get_shoes_image_in_shoes(shoes)
 
     return jsonify(shoes)
+
+@app.route('/admin-order')
+def admin_order():
+    return render_template('list-order.html')
+
+
+@app.route('/done-order', methods=['POST'])
+def done_order():
+    id_order = request.form['id']
+    query = '''
+    UPDATE `order` SET state='done' WHERE id= {};
+    '''.format(id_order)
+    # import pdb; pdb.set_trace()
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute(query)
+    mysql.connection.commit()
+
+    cur.close()
+
+    return "Done"
+
 
 
 if __name__ == "__main__":
