@@ -96,7 +96,7 @@ def get_shoes_image_in_shoes(shoes):
     array_image = []
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     for i in shoes:
-        cur.execute("select * from shoes where id = %s", (i,))
+        cur.execute("select * from shoes where id = %s ", (i,))
         shoesid = cur.fetchone()  
 
         cur.execute("Select name as image, index_image from shoes_image where shoes_id =%s and index_image != '0' ORDER BY index_image ASC", (i,))
@@ -117,7 +117,7 @@ def get_shoes_image_in_shoes(shoes):
 @app.route('/all_shoes')
 def all_shoes():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM shoes" )
+    cur.execute("SELECT * FROM shoes where active != '0'" )
     shoes = cur.fetchall()
     cur.close()
     shoes = get_shoes_image_in_shoes(shoes)
@@ -797,6 +797,25 @@ def create_image_product():
                     
 
     return redirect(url_for('manager_product'))            
+
+
+@app.route('/delete-product',methods=['POST'])
+def delete_product():
+    # import pdb; pdb.set_trace()
+    id = request.form['check']
+
+    query = '''
+    UPDATE `mydb`.`shoes` SET `active`='0' WHERE `id`={};
+
+    '''.format(id)
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    cur.execute(query)
+    mysql.connection.commit()
+    cur.close()
+
+
+    return "dasdasd"
 
 if __name__ == "__main__":
 	app.run(debug= True)

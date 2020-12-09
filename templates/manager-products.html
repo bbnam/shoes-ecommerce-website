@@ -135,7 +135,7 @@
             <a
               href="http://localhost:5000/add-product"
               class="btn btn-primary btn-block text-uppercase mb-3">Add new product</a>
-            <button class="btn btn-primary btn-block text-uppercase">
+            <button class="btn btn-primary btn-block text-uppercase" onclick="delete_select()">
               Delete selected products
             </button>
           </div>
@@ -279,7 +279,7 @@
               <tr>
                       <th scope="row">
                         <div class="form-check">
-                          <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
+                          <input type="checkbox" class="form-check-input" value="${element.id }"/>
                         </div>
                         
                       </th>
@@ -307,9 +307,27 @@
         }
     
 
+        function delete_select(){
+          var val = [];
 
+          $('.form-check-input:checked').each(function(i){
+            
+            $.ajax({ 	
+              type : 'POST',
+              url : '/delete-product',
+              data: {
+                check: $(this).val()
+              }
+              }).done(function(data){
+                window.location.href = "http://localhost:5000/manager-product"
+              })
+        });
+        
+        
 
+        }
 
+          
 
     </script>
   </body>
