@@ -702,6 +702,102 @@ def update_edit_product():
 
     return "sadasd"
 
+@app.route('/add-product')
+def add_product():
+    return render_template('add-product.html')
+
+
+@app.route('/create-add-product', methods=['POST'])
+def create_add_product():
+    # import pdb; pdb.set_trace()
+    name_size = request.form['name_size']
+    length_size = request.form['length_size']
+    product_name = request.form['product_name'].encode('utf-8')
+    description = request.form['description'].encode('utf-8')
+    categories = request.form['categories']
+    price = request.form['price']
+    
+
+
+    # import pdb; pdb.set_trace()
+    query = '''
+    INSERT INTO `mydb`.`shoes` ( `name`, `price`, `categories_id`, `description`) 
+    VALUES ('{}', {}, {}, '{}');
+
+    '''.format(product_name, price, categories, description)
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   
+   
+    cur.execute(query)
+    mysql.connection.commit()
+
+    query_1 = '''
+    select * from shoes
+    '''
+
+    cur.execute(query_1)
+    shoes = cur.fetchall()
+
+    query_4 = '''
+        INSERT INTO `mydb`.`specific_shoes` 
+        (`name`, `amount`, `shoes_id`) VALUES ('{}', {}, {});
+
+        '''.format(name_size, length_size, len(shoes))
+
+    cur.execute(query_4)
+    mysql.connection.commit()
+
+    
+    # set_cookie('shoes', user)
+    
+
+    # query_4 = '''
+    #     INSERT INTO `mydb`.`specific_shoes` 
+    #     (`name`, `amount`, `shoes_id`) VALUES ('{}', {}, {});
+
+    #     '''.format(name_size, length_size, id)
+    # cur.execute(query_4)
+    # mysql.connection.commit()
+
+    
+
+    cur.close()
+    
+
+    return "ASDSDA" 
+
+@app.route('/create-image-product', methods=['POST'])
+def create_image_product():
+    asd = "image-"
+    shoes_id = request.cookies.get('shoes')
+    
+    index_image = 0
+    for i in range(6):
+        string = asd + str(i + 1)
+        index_image = i + 1
+        file = request.files[string]
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            link = os.path.join(app.config['PRODUCT'], filename).replace('/home/nam/Desktop/Web/static/',"")
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                
+            query_4 = '''
+                    INSERT INTO `mydb`.`shoes_image` (`name`, `shoes_id`, `index_image`) VALUES ('{}', {}, {});
+                    '''.format(link, shoes_id, index_image)
+            cur.execute(query_4)
+            mysql.connection.commit()
+            
+           
+
+               
+
+            cur.close()
+            file.save(os.path.join(app.config['PRODUCT'], filename))
+                    
+
+    return redirect(url_for('manager_product'))            
+
 if __name__ == "__main__":
 	app.run(debug= True)
 
