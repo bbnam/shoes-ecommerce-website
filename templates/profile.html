@@ -124,18 +124,8 @@
               <div class="tab-content">
                 <div class="tab-pane fade active show" id="account-general">
     
-                  <div class="card-body media align-items-center">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" >
-                    <div class="media-body ml-4">
-                      <form enctype="multipart/form-data" action="/upload" method="post">
-                      <label class="btn btn-outline-primary" >
-                        Upload new photo
-                        <input id="fileupload" type="file" class="account-settings-fileinput" />
-                      </label> &nbsp;
-                      </form>
-    
-                      <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
-                    </div>
+                  <div class="card-body media align-items-center" id='div-avatar'>
+                    
                   </div>
                   <hr class="border-light m-0">
     
@@ -144,26 +134,35 @@
                       
 
                   </div>
-    
+				  <div class="text-right" style="padding-bottom: 50px; padding-right: 20px;">
+					<button type="button" id ="save-general" class="btn btn-primary" onclick="saveGeneral()">Save changes</button>&nbsp;
+				  </div>
                 </div>
                 <div class="tab-pane fade" id="account-change-password">
                   <div class="card-body pb-2">
     
+              
                     <div class="form-group">
-                      <label class="form-label">Current password</label>
-                      <input type="password" class="form-control">
+						<label class="form-label">New password :</label>
+						<div class="card-body media">
+						  <input type="password" class="form-control">
+						  </div>	
                     </div>
     
                     <div class="form-group">
-                      <label class="form-label">New password</label>
-                      <input type="password" class="form-control">
+					  <label class="form-label">Repeat new password :</label>
+						<div class="card-body media">
+						  <input type="password" class="form-control">
+						  </div>	
                     </div>
-    
-                    <div class="form-group">
-                      <label class="form-label">Repeat new password</label>
-                      <input type="password" class="form-control">
-                    </div>
-    
+					<div class="form-group">
+						<label class="form-label">Code :</label>
+						<div class="card-body media">
+							<input type="text" class="form-control">
+							<button type="button" class="btn btn-warning">Send Code</button>
+						</div>
+						
+					</div>
                   </div>
                 </div>
 
@@ -171,11 +170,11 @@
             </div>
           </div>
         </div>
-    
+<!--     
         <div class="text-right mt-3">
           <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
           <button type="button" class="btn btn-default">Cancel</button>
-        </div>
+        </div> -->
     
       </div>
       </section>
@@ -291,22 +290,92 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                         type: 'POST',
                         url: '/profile-user'
                     }).done(function(data) {
-                      console.log(data[0])
+						console.log(data)
+                      var a = data[0].email
+					  var b = '@gmail.com'
+						console.log(a.length - b.length)
+					var str = a
+					var len = a.length - b.length
+					for (var i = len -1; i > len - 5; i -- ){
+						 str = setCharAt(str,i,'*');
+					}
+
+					let imge = `
+					<img id="avatar" style="width: 300px; height: 300px; margin-left: auto; margin-right: auto;" src=${data[0].avatar} alt="" >
+                    <div class="media-body ml-4">
+					  <form method="post" enctype="multipart/form-data" action="upload">
+						<input id="fileInput" type="file" style="display:none;" 
+						onchange="readURL(this);" name="image" id="image" >
+						<input class="btn btn-outline-primary" 
+						type="button"
+						value="Change Image"
+						onclick="document.getElementById('fileInput').click();"
+						/>
+						<input type="id" style="display: none" value=${getCookie('user')}>
+						<input type="submit" id="submit" style='display:none'/>
+                      </form>
+    
+                      <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
+                    </div>
+					`
+
+
+
+					$('#div-avatar').html(imge)
                         let html =` <div class="form-group">
                       <label class="form-label">Name</label>
-                      <input type="text" class="form-control" value=${data[0].name}>
+                      <input type="text" class="form-control" id="input-name" value='${data[0].name}'>
                     </div>
                     <div class="form-group">
                       <label class="form-label">E-mail</label>
-                      <input type="text" class="form-control mb-1" value="${data[0].email}">
+                      <label class="form-control mb-1">${str}</label>
+                    
                     </div>
                       `
                       $('#info').html(html)
                     })
+
+
+					
 		}
     
-    } 
+	} 
 
+	function setCharAt(str,index,chr) {
+    if(index > str.length-1) return str;
+    return str.substring(0,index) + chr + str.substring(index+1);
+}
+
+	function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#avatar')
+                        .attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+
+			}
+	
+			
+
+        }
+	function saveGeneral(){
+		$.ajax({
+                        data:{
+                            name : $('#input-name').val(),
+							id: getCookie('user')
+                        },
+                        type: 'POST',
+                        url: '/upload-name'
+                    })
+		$("#submit").click()
+		// var name = $('#input-name').val()
+		
+					
+		console.log($('#input-name').val())
+	}
     // let formData = new FormData();           
 
     // formData.append("file", $('#fileupload')[0].files[0]);

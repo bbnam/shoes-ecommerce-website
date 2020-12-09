@@ -1,4 +1,4 @@
-from flask 	import Flask, render_template, request, flash, url_for,jsonify, session
+from flask 	import Flask, render_template, redirect, request, flash, url_for,jsonify, session, send_from_directory,render_template
 from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,8 +11,9 @@ from random import randint
 from textmagic.rest import TextmagicRestClient
 from sendmail import send_mail, random_code
 from flask_mail import Mail, Message 
-
-
+from werkzeug.utils import secure_filename
+import os
+from os.path import join, dirname, realpath
 
 
 
@@ -23,6 +24,7 @@ mysql = MySQL(app)
 
 
 
+UPLOADS_PATH = join(dirname(realpath(__file__)), 'static/avatar/')
 
 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
@@ -42,19 +44,16 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
+
+
+# UPLOAD_FOLDER = 'home/desktop/'
 
 
 
 
-
-
-
-# api = AuthyApiClient(app.config['AUTHY_API_KEY'])
-UPLOAD_FOLDER = '/static/image/File_upload'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['AVATAR'] = UPLOADS_PATH
 
 @app.route('/')
 def index():
@@ -188,7 +187,9 @@ def get_single_review():
     cur.execute(query)
     comment = cur.fetchall()
     cur.close()
-
+    comment[0]['avatar'] = url_for('static', filename=comment[0]['avatar'])
+    
+    
     return jsonify(comment)
 
 
@@ -208,6 +209,10 @@ def get_all_review():
     cur.execute(query)
     comment = cur.fetchall()
     cur.close()
+
+    for image in comment:
+        image['avatar'] = url_for('static', filename=image['avatar'])
+            
 
     return jsonify(comment)
 
@@ -397,12 +402,56 @@ def category():
     return jsonify(shoes)
 
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 @app.route('/upload', methods=['POST'])
 def upload():
+    # import pdb; pdb.set_trace()
+    file = request.files['image']
+    id = request.cookies.get('user')
     
-    import pdb; pdb.set_trace()
-    return redirect(url_for('uploaded_file', filename=filename))
 
+    if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            link = os.path.join(app.config['AVATAR'], filename).replace('/home/nam/Desktop/Web/static/',"")
+            query = '''
+            UPDATE `mydb`.`user` SET `avatar`='{}' WHERE `id`={};
+
+
+            '''.format(link, id)
+            # import pdb; pdb.set_trace()
+
+            # import pdb; pdb.set_trace()
+
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cur.execute(query)
+            mysql.connection.commit()
+            file.save(os.path.join(app.config['AVATAR'], filename))
+            return ''
+
+
+    return "ooooooppppppssss"
+
+@app.route('/upload-name', methods=['POST'])
+def upload_name():
+    id = request.form['id']
+    name = request.form['name'].encode('utf-8')
+
+    query = '''
+    UPDATE `mydb`.`user` SET `name`='{}' WHERE `id`={};
+
+    '''.format(name, id)
+  
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute(query)
+    mysql.connection.commit()
+
+    cur.close()
+
+    return "ooooooppppppssss"
 
 @app.route('/profile')
 def profile():
@@ -414,11 +463,11 @@ def user_profile():
     id = request.form['id']
 
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT email, name FROM user where id = %s",(id) )
+    cur.execute("SELECT avatar,email, name FROM user where id = %s",(id) )
     info = cur.fetchall()
     cur.close()
-
     
+    info[0]['avatar'] = url_for('static', filename=info[0]['avatar'])
 
     return jsonify(info)
 

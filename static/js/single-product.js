@@ -43,8 +43,8 @@ var name =''
 												<div class="media">
 													<div class="d-flex">
 													<img src=${res[0].avatar} style =
-												" width: 30%; 
-												height: 30%; 
+												"width: 100px; 
+												height: 100px; 
 												" alt="">
 													</div>
 													<div class="media-body">
@@ -140,8 +140,8 @@ var name =''
 										<div class="media">
 											<div class="d-flex">
 												<img src="${element.avatar}" style="
-													width: 30%; 
-													height: 30%; 
+													width: 60px; 
+													height: 60px; 
 													
 												"alt="">
 											</div>
