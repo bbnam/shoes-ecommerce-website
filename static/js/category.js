@@ -17,7 +17,7 @@ window.onload = function() {
 								htmlSegment = `<div class="col-lg-4 col-md-6">
 								<div class="single-product wow">
 									<a href="/shop/${element.name}-${element.id}">
-										<img class="img-fluid" src="${element.list_image[0]} " onmouseover="this.src='${element.list_image[3]}';" onmouseout="this.src='${element.list_image[0]}';" alt="" "> 
+										<img class="img-fluid" src="${element.list_image[0].image} " onmouseover="this.src='${element.list_image[3].image}';" onmouseout="this.src='${element.list_image[0].image}';" alt="" "> 
 									<div id='name' class="product-details" style="text-align: center" >
 										<h6 class>${element.name}</h6>
 										<div class="price d-flex justify-content-center">
@@ -34,7 +34,7 @@ window.onload = function() {
 								htmlSegment = `<div class="col-lg-4 col-md-6">
 								<div class="single-product wow">
 									<a href="/shop/${element.name}-${element.id}">
-										<img class="img-fluid" src="${element.list_image[0]} "  alt="" "> 
+										<img class="img-fluid" src="${element.list_image[0].image} "  alt="" "> 
 									<div id='name' class="product-details" style="text-align: center" >
 										<h6 class>${element.name}</h6>
 										<div class="price d-flex justify-content-center">
@@ -124,7 +124,7 @@ function show_shoes(data, append){
 						htmlSegment = `<div class="col-lg-4 col-md-6">
 						<div class="single-product">
 							<a href="/shop/${element.name}-${element.id}">
-								<img class="img-fluid" src="${element.list_image[0]} " onmouseover="this.src='${element.list_image[3]}';" onmouseout="this.src='${element.list_image[0]}';" alt="" "> 
+								<img class="img-fluid" src="${element.list_image[0].image} " onmouseover="this.src='${element.list_image[3].image}';" onmouseout="this.src='${element.list_image[0].image}';" alt="" "> 
 							<div id='name' class="product-details" style="text-align: center" >
 								<h6 class>${element.name}</h6>
 								<div class="price d-flex justify-content-center">
@@ -141,7 +141,7 @@ function show_shoes(data, append){
 						htmlSegment = `<div class="col-lg-4 col-md-6">
 						<div class="single-product">
 						<a href="/shop/${element.name}-${element.id}">
-								<img class="img-fluid" src="${element.list_image[0]} "  alt="" "> 
+								<img class="img-fluid" src="${element.list_image[0].image} "  alt="" "> 
 							<div id='name' class="product-details" style="text-align: center" >
 								<h6 class>${element.name}</h6>
 								<div class="price d-flex justify-content-center">
@@ -176,10 +176,14 @@ $(document).ready(function(){
 		// console.log(typeof(dataId))
 		var res = JSON.parse(localStorage.getItem("allshoes"))
 		if (dataId == 0){
-			show_shoes(JSON.parse(localStorage.getItem("allshoes")).slice(0,1),0)
+			$.ajax({
+				type : 'GET',
+				url : '/all_shoes',
+				success: function(data) {
+			show_shoes(data.slice(0,1),0)
 			shoes_show = 1
 			show_vewmore(shoes_show, JSON.parse(localStorage.getItem("allshoes")).length)
-
+				}})
 		}
 		if (dataId == 1){
 			res.sort(function(a,b){

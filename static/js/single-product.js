@@ -11,17 +11,17 @@ var name =''
 						let html = ''
 							for (var i =1 ; i < res[0].list_image.length; i++){
 								html += `<div class="carousel-item">
-								<img class="d-block w-100" src=${res[0].list_image[i]} alt="">
+								<img class="d-block w-100" src=${res[0].list_image[i].image} alt="">
 							</div>`
 							}
 							$("#image-show").append(html);
-							$("#first-image").html(`<img class="d-block w-100" src=${res[0].list_image[0]} alt="First slide">`);	
+							$("#first-image").html(`<img class="d-block w-100" src=${res[0].list_image[0].image} alt="First slide">`);	
 							$("#shoes-name").html(res[0].name);
 							$("#shoes-price").html(res[0].price);
 							$("#home").html(`<p>${res[0].description}</p>`)
 							name = res[0].name
 							price = res[0].price
-							image= res[0].list_image[0]
+							image= res[0].list_image[0].image
 											}
 										})
 

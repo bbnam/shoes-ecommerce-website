@@ -311,7 +311,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 						value="Change Image"
 						onclick="document.getElementById('fileInput').click();"
 						/>
-						<input type="id" style="display: none" value=${getCookie('user')}>
+						
 						<input type="submit" id="submit" style='display:none'/>
                       </form>
     
@@ -371,22 +371,12 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
                         url: '/upload-name'
                     })
 		$("#submit").click()
-		// var name = $('#input-name').val()
+
 		
 					
 		console.log($('#input-name').val())
 	}
-    // let formData = new FormData();           
 
-    // formData.append("file", $('#fileupload')[0].files[0]);
-
-    // await fetch('/upload', {
-    //   method: "POST", 
-    //   body: formData
- 
-
-
-// }
 
   </script>
 	

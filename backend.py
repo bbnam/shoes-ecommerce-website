@@ -25,6 +25,7 @@ mysql = MySQL(app)
 
 
 UPLOADS_PATH = join(dirname(realpath(__file__)), 'static/avatar/')
+UPLOADS_IMG = join(dirname(realpath(__file__)), 'static/product/')
 
 
 app.config['SECRET_KEY'] = 'Thisissupposedtobesecret!'
@@ -54,7 +55,7 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
 app.config['AVATAR'] = UPLOADS_PATH
-
+app.config['PRODUCT'] = UPLOADS_IMG
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -98,12 +99,12 @@ def get_shoes_image_in_shoes(shoes):
         cur.execute("select * from shoes where id = %s", (i,))
         shoesid = cur.fetchone()  
 
-        cur.execute("Select name as image from shoes_image where shoes_id =%s", (i,))
+        cur.execute("Select name as image, index_image from shoes_image where shoes_id =%s and index_image != '0' ORDER BY index_image ASC", (i,))
         shoes_image = cur.fetchall()
 
         for image in shoes_image:
             image['image'] = url_for('static', filename=image['image'])
-            array_image.append(image['image'])
+            array_image.append(image)
         shoesid['list_image'] = array_image
 
 
@@ -112,6 +113,7 @@ def get_shoes_image_in_shoes(shoes):
     cur.close()
     
     return dict
+
 @app.route('/all_shoes')
 def all_shoes():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -428,8 +430,9 @@ def upload():
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cur.execute(query)
             mysql.connection.commit()
+            cur.close()
             file.save(os.path.join(app.config['AVATAR'], filename))
-            return ''
+            return redirect(url_for('profile'))
 
 
     return "ooooooppppppssss"
@@ -482,6 +485,8 @@ def manager_product():
 
 @app.route('/edit-product')
 def edit():
+
+
     return render_template('edit-product.html')
 
 
@@ -572,7 +577,130 @@ def done_order():
 
     return "Done"
 
+@app.route('/upload-edit-product', methods=['POST'])
+def upload_edit_product():
+    asd = "image-"
+    shoes_id = request.cookies.get('shoes')
+    
+    index_image = 0
+    for i in range(6):
+        string = asd + str(i + 1)
+        index_image = i + 1
+        file = request.files[string]
+        if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                link = os.path.join(app.config['PRODUCT'], filename).replace('/home/nam/Desktop/Web/static/',"")
+                cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                
+                
+                
 
+                query_1 = '''
+                select * from shoes_image where name = '{}'
+                '''.format(link)
+                cur.execute(query_1)
+                has_image = cur.fetchall()
+                
+
+                query_2 = '''
+                select id from shoes_image where index_image = {} and shoes_id = {}
+                '''.format(index_image, shoes_id)
+                cur.execute(query_2)
+                image = cur.fetchone()
+
+                # import pdb; pdb.set_trace()
+                if (image is not None):
+                    query_3 = '''
+                    UPDATE `mydb`.`shoes_image` SET `index_image`=0 WHERE `shoes_id`={} and id = {};
+                    '''.format(shoes_id, image['id'])
+                    cur.execute(query_3)
+                    mysql.connection.commit()
+
+                if (has_image == ()):
+                    query_4 = '''
+                    INSERT INTO `mydb`.`shoes_image` (`name`, `shoes_id`, `index_image`) VALUES ('{}', {}, {});
+                    '''.format(link, shoes_id, index_image)
+                    cur.execute(query_4)
+                    mysql.connection.commit()
+                    
+                else:
+                
+                    query = '''
+                    UPDATE `mydb`.`shoes_image` SET `index_image`={} WHERE `shoes_id`={} and name = '{}';
+                    '''.format(index_image, shoes_id, link)
+                    
+                    cur.execute(query)
+                    mysql.connection.commit()
+
+                cur.close()
+                file.save(os.path.join(app.config['PRODUCT'], filename))
+
+    return redirect(url_for('edit'))            
+
+    
+    
+
+
+@app.route('/update-edit-product', methods=['POST'])
+def update_edit_product():
+    # import pdb; pdb.set_trace()
+    name_size = request.form['name_size']
+    length_size = request.form['length_size']
+    product_name = request.form['product_name'].encode('utf-8')
+    description = request.form['description'].encode('utf-8')
+    categories = request.form['categories']
+    price = request.form['price']
+    id = request.form['id']
+
+
+    # import pdb; pdb.set_trace()
+    query = '''
+    UPDATE `mydb`.`shoes` SET `name`="{}", `price`={}, 
+    `categories_id`={}, 
+    `description`="{}" WHERE `id`={};
+    '''.format(product_name, price, categories, description, id)
+
+
+    query_2 = '''
+    UPDATE `mydb`.`specific_shoes` SET `amount`={} 
+    WHERE `name`={} and`shoes_id`={};
+    '''.format(length_size, name_size, id)
+
+
+
+    query_3 = '''
+    select * from specific_shoes where name = {} and shoes_id = {}
+    '''.format(name_size, id)
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+   
+   
+   
+    cur.execute(query)
+    mysql.connection.commit()
+
+    cur.execute(query_3)
+    
+    
+    if (cur.fetchall() == ()):
+        query_4 = '''
+        INSERT INTO `mydb`.`specific_shoes` 
+        (`name`, `amount`, `shoes_id`) VALUES ('{}', {}, {});
+
+        '''.format(name_size, length_size, id)
+        cur.execute(query_4)
+        mysql.connection.commit()
+    else:
+        cur.execute(query_2)
+        mysql.connection.commit()
+    
+
+
+    
+
+    cur.close()
+
+
+    return "sadasd"
 
 if __name__ == "__main__":
 	app.run(debug= True)
