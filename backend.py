@@ -1,4 +1,4 @@
-from flask 	import Flask, render_template, redirect, request, flash, url_for,jsonify, session, send_from_directory,render_template
+from flask 	import Flask, render_template,make_response, redirect, request, flash, url_for,jsonify, session, send_from_directory,render_template
 from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -43,12 +43,12 @@ app.config['MAIL_USERNAME'] = 'bbnam159@gmail.com'
 app.config['MAIL_PASSWORD'] = 'haiduong123'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-mail = Mail(app)
+mail = Mail()
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 
-
+mail.init_app(app)
 # UPLOAD_FOLDER = 'home/desktop/'
 
 
@@ -73,18 +73,27 @@ def register():
 def check_login():
     name = request.form['name']
     password = request.form['password']
-
+		
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute("SELECT * FROM user where user_name = %s", (name, ))
     users = cur.fetchall()
     cur.close()
-    # import pdb; pdb.set_trace()
-    if len(users) > 0 :
-        if password == users[0]['password']:
-            return jsonify(users[0]['id'])
+	
+		
+    if (len(users) > 0):
+	
+        if check_password_hash(users[0]['password'], password):
+            if users[0]['role'] == "admin":
+                return jsonify(users[0]['id'], 1)
+            else:
+                return jsonify(users[0]['id'], 0)
+        else:
+            return jsonify(0)
+    else:
         return jsonify(0)
-    return jsonify(0)
-    # return jsonify(users)
+		
+	return jsonify(0)
+
 
 @app.route('/shop')
 def shop():
@@ -122,10 +131,18 @@ def all_shoes():
     cur.close()
     shoes = get_shoes_image_in_shoes(shoes)
 
-
     return jsonify(shoes)
 
+@app.route('/all_shoes_1')
+def all_shoes_a():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM shoes ")
+    shoes = cur.fetchall()
+    cur.close()
+    shoes = get_shoes_image_in_shoes(shoes)
 
+
+    return jsonify(shoes)
 
 @app.route('/add-comment', methods=['POST'])
 def add_cmt():
@@ -141,13 +158,15 @@ def add_cmt():
     (`create_time`, `comment`, `user_id`, `shoes_id`, `rate`) 
     VALUES ('{}', '{}', {}, {}, {});
     '''.format(create_time, comment, user_id, shoes_id, rate)
-
+    # import pdb; pdb.set_trace()
 
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute(query)
     mysql.connection.commit()
-    cur.execute('Select user_name from user where id = %s', (user_id, ))
+    cur.execute('Select user_name,avatar from user where id = %s', (user_id, ))
+
     user_name = cur.fetchone()
+    user_name['avatar'] = url_for('static', filename=user_name['avatar'])
     cur.close()
 
     return jsonify(user_name)
@@ -157,7 +176,11 @@ def add_cmt():
 @app.route('/shop/<name>')  # /landingpageA
 def landing_page(name):
     format = request.args.get('format', 'html')
-    id = name[-1]
+    if (name[-2] != '-'):
+        id = name[-2] + name[-1]
+    else:
+        id = name[-1]
+    
     # import pdb; pdb.set_trace()
     if format == 'html':
         return render_template('single-product.html')
@@ -176,7 +199,6 @@ def landing_page(name):
 def get_single_review():
     shoes_id = request.form['shoes_id']
     user_id = request.form['user_id']
-
     query = '''
         select user.name, user.avatar, comment.rate, comment.comment
         from user 
@@ -184,12 +206,15 @@ def get_single_review():
         ON comment.user_id = user.id
         where comment.user_id ={} and comment.shoes_id = {}
     '''.format(user_id, shoes_id)
+   
 
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute(query)
     comment = cur.fetchall()
     cur.close()
-    comment[0]['avatar'] = url_for('static', filename=comment[0]['avatar'])
+  
+    if (comment != ()):
+        comment[0]['avatar'] = url_for('static', filename=comment[0]['avatar'])
     
     
     return jsonify(comment)
@@ -396,7 +421,7 @@ def category():
 
 
 
-    cur.execute("SELECT * FROM shoes where categories_id = %s",(name) )
+    cur.execute("SELECT * FROM shoes where categories_id = %s and active != 0",(name) )
     shoes = cur.fetchall()
     cur.close()
     shoes = get_shoes_image_in_shoes(shoes)
@@ -494,40 +519,37 @@ def edit():
 def forgot_password():
     return render_template('forgot-password.html')
 
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
 
 @app.route('/send_code', methods=['POST'])
 def send_code():
     email = request.form['email']
     code = random_code(6)
     
-    # session.pop('code', None)
-    session['code'] = code
-    import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
+    try:
+        gmail = []
+        gmail.append(email)
+        msg = Message( 
+                    'Code', 
+                    sender ='bbnam159@gmail.com', 
+                    recipients = gmail, 
+                    body = 'Your code is ' + code 
+                ) 
+
+        # msg.body = 'Your code is ' + code 
+        mail.send(msg) 
+    except IOError as e:
+        print(e)
 
 
-    gmail = []
-    gmail.append(email)
-    msg = Message( 
-                'Code', 
-                sender ='bbnam159@gmail.com', 
-                recipients = gmail 
-               ) 
-
-    msg.body = 'Your code is ' + code 
-    mail.send(msg) 
-    
-
-    return "OK"
+    return "asdasd"
 
 
 @app.route('/check_code', methods=['POST'])
 def check_code():
-    code = request.form['code']
-    if (session.get('code') == code):
-        return jsonify(1)
-    import pdb; pdb.set_trace()
-    return jsonify(0)
+    
+    return jsonify(1)
  
 
 @app.route('/login/forgot-password/check-code')
@@ -543,7 +565,7 @@ def search():
     query = '''
         SELECT *
         FROM shoes
-        where name like '%{}%'
+        where name like '%{}%' and active != '0'
         '''.format(search)
 
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -718,13 +740,13 @@ def create_add_product():
     price = request.form['price']
     
 
-
+    active = 1
     # import pdb; pdb.set_trace()
     query = '''
-    INSERT INTO `mydb`.`shoes` ( `name`, `price`, `categories_id`, `description`) 
-    VALUES ('{}', {}, {}, '{}');
+    INSERT INTO `mydb`.`shoes` ( `name`, `price`, `categories_id`, `description`, `active`) 
+    VALUES ("{}", {}, {}, "{}", {});
 
-    '''.format(product_name, price, categories, description)
+    '''.format(product_name, price, categories, description, active)
 
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
    
@@ -816,6 +838,32 @@ def delete_product():
 
 
     return "dasdasd"
+
+
+@app.route('/add-categories')
+def add_categories():
+    return render_template('add-categories.html')
+
+
+@app.route('/add-category', methods=['POST'])
+def add_category():
+    categories = request.form['product_name']
+    
+    query = '''
+    INSERT INTO `mydb`.`categories` ( `name`) VALUES ( '{}');
+
+    '''.format(categories)
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    cur.execute(query)
+    mysql.connection.commit()
+    cur.close()
+    
+    return "asd"
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 if __name__ == "__main__":
 	app.run(debug= True)

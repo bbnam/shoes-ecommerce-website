@@ -1,6 +1,6 @@
 // load single-product
 
-var shoes_show = 1
+var shoes_show = 9
 
 window.onload = function() {
 			$.ajax({
@@ -111,9 +111,9 @@ function more(){
 	
 	res = JSON.parse(localStorage.getItem("allshoes"))
 
-	show_shoes(res.slice(shoes_show, shoes_show+1),1)
+	show_shoes(res.slice(shoes_show, shoes_show+9),1)
 
-	shoes_show = shoes_show + 1
+	shoes_show = shoes_show + 9
 	show_vewmore(shoes_show, JSON.parse(localStorage.getItem("allshoes")).length)
 }
 
@@ -180,8 +180,8 @@ $(document).ready(function(){
 				type : 'GET',
 				url : '/all_shoes',
 				success: function(data) {
-			show_shoes(data.slice(0,1),0)
-			shoes_show = 1
+			show_shoes(data.slice(0,9),0)
+			shoes_show = 9
 			show_vewmore(shoes_show, JSON.parse(localStorage.getItem("allshoes")).length)
 				}})
 		}
@@ -191,8 +191,8 @@ $(document).ready(function(){
 			})
 			localStorage.setItem('allshoes', JSON.stringify(res));
 
-			show_shoes(res.slice(0,1),0)
-			shoes_show = 1
+			show_shoes(res.slice(0,9),0)
+			shoes_show = 9
 			show_vewmore(shoes_show, JSON.parse(localStorage.getItem("allshoes")).length)
 
 		}
@@ -201,8 +201,8 @@ $(document).ready(function(){
 				return parseFloat(a.price) - parseFloat(b.price);
 			})
 			localStorage.setItem('allshoes', JSON.stringify(res));			
-			show_shoes(res.slice(0,1),0)
-			shoes_show = 1
+			show_shoes(res.slice(0,9),0)
+			shoes_show = 9
 			show_vewmore(shoes_show, JSON.parse(localStorage.getItem("allshoes")).length)
 
 
@@ -233,8 +233,8 @@ function showcategory(){
 				$('#name-category').html(html)
 				localStorage.setItem('allshoes', JSON.stringify(res));
 				
-				show_shoes(res.slice(0,1),0)
-				shoes_show = 1
+				show_shoes(res.slice(0,9),0)
+				shoes_show = 9
 				show_vewmore(shoes_show, JSON.parse(localStorage.getItem("allshoes")).length)
 
 				}
@@ -255,8 +255,8 @@ function showcategory(){
 		$('#name-category').html(html)
 		localStorage.setItem('allshoes', JSON.stringify(res));
 		
-		show_shoes(res.slice(0,1),0)
-		shoes_show = 1
+		show_shoes(res.slice(0,9),0)
+		shoes_show = 9
 		show_vewmore(shoes_show, JSON.parse(localStorage.getItem("allshoes")).length)
 
 

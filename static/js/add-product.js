@@ -7,7 +7,7 @@ $(function() {
 window.onload = function(){
     $.ajax({ 	
         type : 'GET',
-        url : '/all_shoes'
+        url : '/all_shoes_1'
         })
       .done(function(res) {
         console.log(res.length)

@@ -18,9 +18,10 @@ $(document).ready(function(){
             type : 'POST',
             url : '/search'
             }).done(function(data){
+                console.log(data)
                 data.forEach( element => {
                      $('#result').append(`<li style="text-align:left; font-size: 18px" >
-                     <img src="${element.list_image[0]}" height="50" width="50" class="img-thumbnail" />
+                     <img src="${element.list_image[0].image}" height="50" width="50" class="img-thumbnail" />
                     <a style = "color: white"href="http://localhost:5000/shop/${element.name}-${element.id}">
                      ${element.name}
                     </a>`);

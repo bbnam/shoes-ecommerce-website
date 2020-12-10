@@ -2,8 +2,9 @@ var name =''
 		var price = ''
 		var image = ''
 		window.onload = function() {
-			// console.log(window.location.href)
+			
 			url = window.location.href + "?format=json"
+
 			$.ajax({
 					type : 'GET',
 					url : url,
@@ -31,7 +32,7 @@ var name =''
 					type : 'POST',
 					url : '/get-single-review',
 					data:{
-						shoes_id: window.location.href.substring(window.location.href.length - 1, window.location.href.length),
+						shoes_id: window.location.href.substring(window.location.href.length - 2, window.location.href.length).replace('-', ''),
 						user_id: getCookie('user')
 	
 					},
@@ -93,7 +94,7 @@ var name =''
 			name_size_target = $(this).attr('value')
 			$.ajax({
 						data : {
-							size : window.location.href.substring(window.location.href.length - 1, window.location.href.length),
+							size : window.location.href.substring(window.location.href.length - 2, window.location.href.length).replace('-', ''),
 							name : $(this).attr('value')
 						}, 	
 							type : 'POST',
@@ -119,7 +120,7 @@ var name =''
 			type : 'POST',
 			url : '/get-all-review',
 			data:{
-				shoes_id: window.location.href.substring(window.location.href.length - 1, window.location.href.length)
+				shoes_id: window.location.href.substring(window.location.href.length - 2, window.location.href.length).replace('-', '')
 
 			},
 			success: function(res) {
@@ -317,7 +318,7 @@ var name =''
 
 function rating(){
 		let rate = $("input[type='radio'][name='rating']:checked").val()
-		
+		console.log(window.location.href.length - 1)
 		if(getCookie('user') != ''){
 			$.ajax({
 				type : 'POST',
@@ -325,7 +326,7 @@ function rating(){
 				data:{
 					rate: rate,
 					comment: $('#message').val(),
-					shoes_id: window.location.href.substring(window.location.href.length - 1, window.location.href.length),
+					shoes_id: window.location.href.substring(window.location.href.length - 2, window.location.href.length).replace('-', ''),
 					user_id: getCookie('user')
 	
 				},
@@ -336,7 +337,8 @@ function rating(){
 					<div class="review_item">
 										<div class="media">
 											<div class="d-flex">
-												<img src="img/product/review-3.png" alt="">
+												<img style="width: 100px; 
+												height: 100px;"src="${res.avatar}" alt="">
 											</div>
 											<div class="media-body">
 												<h4>${res.user_name}</h4>

@@ -277,9 +277,15 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 					}
 					else{
 						// localStorage.setItem("user", JSON.stringify(data))
-						setCookie('user', data, 1)
-						
+						setCookie('user', data[0], 1)
+
+						if(data[1] == 1){
+							window.location.href = "http://localhost:5000/manager-product";
+						}
+						else{
+							
 						window.location.href = "http://localhost:5000/";
+						}
 					}
 			});}
 

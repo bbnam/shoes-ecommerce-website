@@ -52,18 +52,18 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav ml-auto" id="tabindex"> 
-							<li class="nav-item "><a class="nav-link" href="">Home</a></li>
+							<li class="nav-item "><a class="nav-link" href="http://localhost:5000">Home</a></li>
 							<li class="nav-item submenu dropdown active">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 								 aria-expanded="false">Shop</a>
 								<ul class="dropdown-menu">
-									<li class="nav-item active"><a class="nav-link" href="shop">Shop Category</a></li>
-									<li class="nav-item"><a class="nav-link" href="/confirmation">Confirmation</a></li>
+									<li class="nav-item active"><a class="nav-link" href="http://localhost:5000/shop">Shop Category</a></li>
+									<li class="nav-item"><a class="nav-link" href="http://localhost:5000/confirmation">Confirmation</a></li>
 								</ul>
 							</li>
 							
 							
-							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+							<li class="nav-item"><a class="nav-link" href="http://localhost:5000/contact">Contact</a></li>
 							<li class="nav-item submenu dropdown" id='login'>
 								<a class="nav-link" href="http://localhost:5000/login">Login</a>
 							</li>
@@ -277,14 +277,14 @@
 					<div class="single-footer-widget mail-chimp">
 						<h6 class="mb-20">Instragram Feed</h6>
 						<ul class="instafeed d-flex flex-wrap">
-							<li><img src="img/i1.jpg" alt=""></li>
-							<li><img src="img/i2.jpg" alt=""></li>
-							<li><img src="img/i3.jpg" alt=""></li>
-							<li><img src="img/i4.jpg" alt=""></li>
-							<li><img src="img/i5.jpg" alt=""></li>
-							<li><img src="img/i6.jpg" alt=""></li>
-							<li><img src="img/i7.jpg" alt=""></li>
-							<li><img src="img/i8.jpg" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i1.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i2.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i3.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i4.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i5.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i6.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i7.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i8.jpg' )}}" alt=""></li>
 						</ul>
 					</div>
 				</div>

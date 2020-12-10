@@ -51,18 +51,18 @@
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 						<ul class="nav navbar-nav menu_nav ml-auto" id="tabindex"> 
-							<li class="nav-item active"><a class="nav-link" href="">Home</a></li>
+							<li class="nav-item"><a class="nav-link" href="">Home</a></li>
 							<li class="nav-item submenu dropdown active">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 								 aria-expanded="false">Shop</a>
 								<ul class="dropdown-menu">
-									<li class="nav-item"><a class="nav-link" href="shop">Shop Category</a></li>
-									<li class="nav-item"><a class="nav-link" href="/confirmation">Confirmation</a></li>
+									<li class="nav-item"><a class="nav-link" href="http://localhost:5000/shop">Shop Category</a></li>
+									<li class="nav-item"><a class="nav-link" href="http://localhost:5000/confirmation">Confirmation</a></li>
 								</ul>
 							</li>
 							
 							
-							<li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+							<li class="nav-item"><a class="nav-link" href="http://localhost:5000/contact">Contact</a></li>
 							<li class="nav-item submenu dropdown" id='login'>
 								<a class="nav-link" href="http://localhost:5000/login">Login</a>
 							</li>
@@ -206,8 +206,7 @@
 						<p style="color: red; text-align: center; font-size: 16px; display: none;" id='have-shoes'></p>
 						<div class="card_area d-flex align-items-center">
 							<div class="primary-btn" onclick="addtoCart()">Add to Cart</div>
-							<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
-							<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
+							
 						</div>
 						
 						
@@ -382,7 +381,7 @@
 					<div class="row">
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r1.jpg" alt=""></a>
+								<a href="#"><img src="{{url_for('static', filename='img/r1.jpg' )}}" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -394,7 +393,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r2.jpg" alt=""></a>
+								<a href="#"><img src="{{url_for('static', filename='img/r2.jpg' )}}" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -406,7 +405,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r3.jpg" alt=""></a>
+								<a href="#"><img src="{{url_for('static', filename='img/r3.jpg' )}}" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -418,7 +417,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r5.jpg" alt=""></a>
+								<a href="#"><img src="{{url_for('static', filename='img/r5.jpg' )}}" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -430,7 +429,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r6.jpg" alt=""></a>
+								<a href="#"><img src="{{url_for('static', filename='img/r6.jpg' )}}" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -442,7 +441,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r7.jpg" alt=""></a>
+								<a href="#"><img src="{{url_for('static', filename='img/r7.jpg' )}}" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -454,7 +453,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r9.jpg" alt=""></a>
+								<a href="#"><img src="{{url_for('static', filename='img/r9.jpg' )}}" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -466,7 +465,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r10.jpg" alt=""></a>
+								<a href="#"><img src="{{url_for('static', filename='img/r10.jpg' )}}" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -478,7 +477,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r11.jpg" alt=""></a>
+								<a href="#"><img src="{{url_for('static', filename='img/r11.jpg' )}}" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -493,7 +492,7 @@
 				<div class="col-lg-3">
 					<div class="ctg-right">
 						<a href="#" target="_blank">
-							<img class="img-fluid d-block mx-auto" src="img/category/c5.jpg" alt="">
+							<img class="img-fluid d-block mx-auto" src="{{url_for('static', filename='img/category/c5.jpg' )}}" alt="">
 						</a>
 					</div>
 				</div>
@@ -548,14 +547,14 @@
 					<div class="single-footer-widget mail-chimp">
 						<h6 class="mb-20">Instragram Feed</h6>
 						<ul class="instafeed d-flex flex-wrap">
-							<li><img src="img/i1.jpg" alt=""></li>
-							<li><img src="img/i2.jpg" alt=""></li>
-							<li><img src="img/i3.jpg" alt=""></li>
-							<li><img src="img/i4.jpg" alt=""></li>
-							<li><img src="img/i5.jpg" alt=""></li>
-							<li><img src="img/i6.jpg" alt=""></li>
-							<li><img src="img/i7.jpg" alt=""></li>
-							<li><img src="img/i8.jpg" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i1.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i2.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i3.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i4.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i5.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i6.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i7.jpg' )}}" alt=""></li>
+							<li><img src="{{url_for('static', filename='img/i8.jpg' )}}" alt=""></li>
 						</ul>
 					</div>
 				</div>
